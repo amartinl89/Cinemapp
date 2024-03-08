@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Cinemapp</string>
+    <string name="anadir_peli_str">Add a film</string>
+    <string name="ver_pelis_str">Check my films</string>
+    <string name="nom_peli_str">"Name: "</string>
+    <string name="ano_peli_str">Year:</string>
+    <string name="ano_peli_str">Yea</string>
+    <string name="anadir_portada_str">Add film\'s cover:</string>
+    <string name="anadir_review_str">Add a review:</string>
+</resources>

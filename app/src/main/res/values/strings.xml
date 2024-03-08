@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Cinemapp</string>
+    <string name="anadir_peli_str">Add film</string>
+    <string name="ver_pelis_str">Ver mis películas</string>
+    <string name="nom_peli_str">Name:</string>
+    <string name="ano_peli_str">Year</string>
+    <string name="anadir_portada_str">Add film\'s cover:</string>
+    <string name="anadir_review_str">Add a review</string>
 </resources>

@@ -6,13 +6,68 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
+    <Button
+        android:id="@+id/verReviewV"
+        android:layout_width="266dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="173dp"
+        android:layout_marginBottom="200dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/anadirReviewV"
+        tools:text="Ver"
+        android:shape="rectangle"/>
+
+    <Button
+        android:id="@+id/anadirReviewV"
+        android:layout_width="266dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="293dp"
+        android:shape="rectangle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cinemappMenuV"
+        tools:text="Añadir" />
+
+    <ImageView
+        android:id="@+id/logoMenuV"
+        android:layout_width="288dp"
+        android:layout_height="131dp"
+        android:layout_marginBottom="88dp"
+        android:src="@drawable/popcorn_cinema_fizzy_drinks_film_popcorn_b34b82fea18cf92baefb2b6d2d0f28a7"
+        app:layout_constraintBottom_toTopOf="@+id/anadirReviewV"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/cinemappMenuV"
+        android:layout_width="165dp"
+        android:layout_height="76dp"
+        android:text="CINEMAPP"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/logoMenuV"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/configV"
+        android:layout_width="91dp"
+        android:layout_height="78dp"
+        android:layout_marginBottom="56dp"
+        android:foreground="@android:drawable/divider_horizontal_bright"
+        app:icon="@android:drawable/ic_menu_preferences"
+        app:iconPadding="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cinemappMenuV"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Error" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
