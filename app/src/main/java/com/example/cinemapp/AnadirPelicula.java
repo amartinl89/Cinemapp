@@ -1,5 +1,6 @@
 package com.example.cinemapp;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -88,8 +90,8 @@ public class AnadirPelicula extends AppCompatActivity {
                 byte[] byteArray = stream.toByteArray();
                 bd.insertarReview(tiempo,nom,byteArray,ano,review);
                 img.recycle();
-                Intent e = new Intent(AnadirPelicula.this, MainActivity.class);
-                AnadirPelicula.this.startActivity(e);
+                DialogFragment popup = new PopUpCreado();
+                popup.show(getSupportFragmentManager(),"creado");
             }
         });
     }

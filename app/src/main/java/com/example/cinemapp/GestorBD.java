@@ -63,4 +63,5 @@ public class GestorBD extends SQLiteOpenHelper {
 
         db.close();
     }
+
 }
