@@ -39,11 +39,11 @@
         android:id="@+id/escribirReviewAnadirPeliV"
         android:layout_width="358dp"
         android:layout_height="125dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginBottom="92dp"
         android:ems="10"
         android:inputType="text|textAutoCorrect"
-        app:layout_constraintBottom_toTopOf="@+id/confirmarAnadirPeliV"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
@@ -60,11 +60,11 @@
         android:id="@+id/reviewAnadirPeliV"
         android:layout_width="149dp"
         android:layout_height="42dp"
-        android:layout_marginBottom="28dp"
+        android:layout_marginBottom="24dp"
         android:text="TextView"
         app:layout_constraintBottom_toTopOf="@+id/escribirReviewAnadirPeliV"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.118"
+        app:layout_constraintHorizontal_bias="0.106"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
@@ -79,10 +79,10 @@
 
     <EditText
         android:id="@+id/escribirNomAnadirPeliV"
-        android:layout_width="154dp"
-        android:layout_height="35dp"
+        android:layout_width="156dp"
+        android:layout_height="52dp"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
         android:inputType="text"
         app:layout_constraintStart_toEndOf="@+id/nomAnadirPeliV"
@@ -92,29 +92,46 @@
         android:id="@+id/escriibirAnoPeliV"
         android:layout_width="155dp"
         android:layout_height="33dp"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="72dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="80dp"
         app:layout_constraintStart_toEndOf="@+id/anoAnadirPeliv"
         app:layout_constraintTop_toTopOf="@+id/escribirNomAnadirPeliV" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/visualImgAnadirPeliV"
+            android:layout_width="369dp"
+            android:layout_height="198dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginBottom="36dp"
+            tools:srcCompat="@tools:sample/avatars" />
+
+    </androidx.cardview.widget.CardView>
 
     <Button
         android:id="@+id/escribirImagenAnadirPeliV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="104dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="80dp"
         android:text="Button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/anadirImagenPeliV"
-        app:layout_constraintTop_toBottomOf="@+id/visualImgAnadirPeliV" />
+        app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
-    <ImageView
-        android:id="@+id/visualImgAnadirPeliV"
-        android:layout_width="351dp"
-        android:layout_height="174dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginBottom="36dp"
-        app:layout_constraintBottom_toTopOf="@+id/anadirImagenPeliV"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+    <Spinner
+        android:id="@+id/escribirPuntAnadirPeliV"
+        android:layout_width="154dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintStart_toEndOf="@+id/reviewAnadirPeliV"
+        app:layout_constraintTop_toBottomOf="@+id/escriibirAnoPeliV" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+

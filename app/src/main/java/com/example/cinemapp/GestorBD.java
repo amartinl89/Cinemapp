@@ -26,6 +26,7 @@ public class GestorBD extends SQLiteOpenHelper {
                 "Nombre VARCHAR(255), " +
                 "Imagen BLOB, " +
                 "Ano INTEGER, " +
+                "Puntuacion INTEGER," +
                 "Resena TEXT)";
         db.execSQL(queryCrearTabla);
     }
@@ -39,13 +40,13 @@ public class GestorBD extends SQLiteOpenHelper {
     // Métodos adicionales para interactuar con la base de datos (por ejemplo, insertar, actualizar, consultar)
 
     // Ejemplo de método para insertar una nueva revisión en la tabla
-    public void insertarReview(Date fecha, String nombre, byte[] imagen, int ano, String resena) {
+    public void insertarReview(Date fecha, String nombre, byte[] imagen, int ano, String resena, int punt) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String queryInsertar = "INSERT INTO Review (Fecha, Nombre, Imagen, Ano, Resena) VALUES (?, ?, ?, ?, ?)";
-        db.execSQL(queryInsertar, new Object[]{fecha, nombre, imagen, ano, resena});
+        String queryInsertar = "INSERT INTO Review (Fecha, Nombre, Imagen, Ano, Resena, Puntuacion) VALUES (?, ?, ?, ?, ?, ?)";
+        db.execSQL(queryInsertar, new Object[]{fecha, nombre, imagen, ano, resena, punt});
         db.close();
     }
-    public void actualizarReview(Date fecha, String nuevoNombre, byte[] nuevaImagen, int nuevoAno, String nuevaResena) {
+    public void actualizarReview(Date fecha, String nuevoNombre, byte[] nuevaImagen, int nuevoAno, String nuevaResena, int nuevaPunt) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -53,6 +54,7 @@ public class GestorBD extends SQLiteOpenHelper {
         values.put("Imagen", nuevaImagen);
         values.put("Ano", nuevoAno);
         values.put("Resena", nuevaResena);
+        values.put("Puntuacion", nuevaPunt);
 
         // Convertir la fecha a un formato de cadena que coincida con el formato en la base de datos
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
