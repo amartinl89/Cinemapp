@@ -42,12 +42,12 @@
         android:layout_marginStart="24dp"
         android:layout_marginBottom="12dp"
         android:ems="10"
-        android:inputType="text"
+        android:inputType="text|textAutoCorrect"
         app:layout_constraintBottom_toTopOf="@+id/confirmarAnadirPeliV"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/BackanadirPeliV"
+        android:id="@+id/backAnadirPeliV"
         android:layout_width="107dp"
         android:layout_height="52dp"
         android:layout_marginStart="28dp"
