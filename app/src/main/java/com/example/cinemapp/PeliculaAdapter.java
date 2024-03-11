@@ -15,7 +15,7 @@ import org.json.JSONObject;
 
 public class PeliculaAdapter extends RecyclerView.Adapter<PeliculaAdapter.PeliculaViewHolder> {
 
-    private JSONArray listaPeliculas;
+    private final JSONArray listaPeliculas;
 
     public PeliculaAdapter(JSONArray listaPeliculas) {
         this.listaPeliculas = listaPeliculas;
@@ -35,7 +35,8 @@ public class PeliculaAdapter extends RecyclerView.Adapter<PeliculaAdapter.Pelicu
 
             // Configurar los elementos de la tarjeta con los datos de la base de datos
             holder.nombreTarjeta.setText(pelicula.getString("Nombre"));
-
+            holder.anoTarjeta.setText(pelicula.getString("Ano"));
+            holder.puntTarjeta.setText(pelicula.getString("Puntuacion"));
             // Aquí puedes configurar otros elementos de la tarjeta, como la imagen
 
         } catch (JSONException e) {
@@ -51,11 +52,15 @@ public class PeliculaAdapter extends RecyclerView.Adapter<PeliculaAdapter.Pelicu
     public static class PeliculaViewHolder extends RecyclerView.ViewHolder {
         ImageView imagenTarjeta;
         TextView nombreTarjeta;
+        TextView anoTarjeta;
+        TextView puntTarjeta;
 
         public PeliculaViewHolder(@NonNull View itemView) {
             super(itemView);
             imagenTarjeta = itemView.findViewById(R.id.imagenTarjeta);
             nombreTarjeta = itemView.findViewById(R.id.nombreTarjeta);
+            anoTarjeta = itemView.findViewById(R.id.anoTarjeta);
+            puntTarjeta = itemView.findViewById(R.id.puntTarjeta);
             // Configura otros elementos de la tarjeta si es necesario
         }
     }
