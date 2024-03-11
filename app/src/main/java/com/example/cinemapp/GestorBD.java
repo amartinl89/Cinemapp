@@ -2,10 +2,18 @@ package com.example.cinemapp;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.JsonToken;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
 
@@ -65,5 +73,22 @@ public class GestorBD extends SQLiteOpenHelper {
 
         db.close();
     }
-
+    public JSONArray visualizarLista() throws JSONException {
+        SQLiteDatabase db = this.getReadableDatabase();
+        JSONArray js = new JSONArray();
+        Cursor c = db.rawQuery("SELECT Fecha, Nombre, Imagen, Ano, Puntuacion FROM Review",null);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
+        while (c.moveToNext()){
+            JSONObject j = new JSONObject();
+            LocalDate l = LocalDate.parse(c.getString(0), formatter);
+            j.put("Fecha",l);
+            j.put("Nombre",c.getString(1));
+            j.put("Imagen",c.getBlob(2));
+            j.put("Ano",c.getInt(3));
+            j.put("Puntuacion",c.getInt(4));
+            js.put(j);
+        }
+        c.close();
+        return js;
+    }
 }

@@ -21,5 +21,13 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.startActivity(e);
             }
         });
+        Button botVerPeliculas = findViewById( R.id.verReviewV);
+        botVerPeliculas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent e = new Intent(MainActivity.this, VerPelicula.class);
+                MainActivity.this.startActivity(e);
+            }
+        });
     }
 }
