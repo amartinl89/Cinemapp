@@ -84,7 +84,6 @@ public class AnadirPelicula extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent e = new Intent(AnadirPelicula.this, MainActivity.class);
-                e.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
                 AnadirPelicula.this.startActivity(e);
             }
         });

@@ -23,6 +23,7 @@
         </activity>
         <activity android:label="@string/app_name" android:name=".AnadirPelicula"/>
         <activity android:label="@string/app_name" android:name=".VerPelicula"/>
+        <activity android:label="@string/app_name" android:name=".VisualizarReviewDetalle"/>
     </application>
 
 

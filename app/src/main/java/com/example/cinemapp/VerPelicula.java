@@ -1,8 +1,18 @@
 package com.example.cinemapp;
 
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,6 +42,18 @@ public class VerPelicula extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        //Botón back
+        Button back = findViewById(R.id.backVerPeliculaV);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent e = new Intent(VerPelicula.this, MainActivity.class);
+                VerPelicula.this.startActivity(e);
+            }
+        });
     }
 }
+
 

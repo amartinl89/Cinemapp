@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:id="@+id/visualizar_review_detalle">
+    <fragment
+        android:id="@+id/addNoteFragment"
+        android:name="com.nic.roomdatabase.Fragment.">
+        <action
+            android:id="@+id/action_addNoteFragment_to_home_fragment"
+            app:destination="@id/visualizar_review_detalle" />
+    </fragment>
+
+</navigation>

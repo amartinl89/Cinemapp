@@ -76,7 +76,7 @@ public class GestorBD extends SQLiteOpenHelper {
     public JSONArray visualizarLista() throws JSONException {
         SQLiteDatabase db = this.getReadableDatabase();
         JSONArray js = new JSONArray();
-        Cursor c = db.rawQuery("SELECT Fecha, Nombre, Imagen, Ano, Puntuacion FROM Review",null);
+        Cursor c = db.rawQuery("SELECT Fecha, Nombre, Imagen, Ano, Puntuacion, Resena FROM Review",null);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
         while (c.moveToNext()){
             JSONObject j = new JSONObject();
@@ -86,6 +86,7 @@ public class GestorBD extends SQLiteOpenHelper {
             j.put("Imagen",c.getBlob(2));
             j.put("Ano",c.getInt(3));
             j.put("Puntuacion",c.getInt(4));
+            j.put("Resena",c.getString(5));
             js.put(j);
         }
         c.close();
