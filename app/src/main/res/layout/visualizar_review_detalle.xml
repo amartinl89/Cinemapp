@@ -6,6 +6,7 @@
     android:layout_height="match_parent">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="412dp"
         android:layout_height="649dp"
         android:layout_marginTop="16dp"
@@ -49,9 +50,31 @@
             <TextView
                 android:id="@+id/resenaDetalleV"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="263dp"
                 android:text="TextView"
                 android:visibility="visible" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/backDetalleV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="4dp"
+        android:text="Button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView" />
+
+    <Button
+        android:id="@+id/modifDetalleV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="60dp"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView"
+        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

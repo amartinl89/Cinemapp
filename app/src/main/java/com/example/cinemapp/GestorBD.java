@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 
@@ -41,47 +42,39 @@ public class GestorBD extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Actualización de la base de datos (si es necesario en versiones futuras)
-        // Aquí puedes realizar tareas como agregar nuevas columnas o realizar migraciones de datos.
-    }
+        }
 
-    // Métodos adicionales para interactuar con la base de datos (por ejemplo, insertar, actualizar, consultar)
-
-    // Ejemplo de método para insertar una nueva revisión en la tabla
-    public void insertarReview(Date fecha, String nombre, byte[] imagen, int ano, String resena, int punt) {
+    public void insertarReview(String fecha, String nombre, byte[] imagen, int ano, String resena, int punt) {
         SQLiteDatabase db = this.getWritableDatabase();
         String queryInsertar = "INSERT INTO Review (Fecha, Nombre, Imagen, Ano, Resena, Puntuacion) VALUES (?, ?, ?, ?, ?, ?)";
         db.execSQL(queryInsertar, new Object[]{fecha, nombre, imagen, ano, resena, punt});
         db.close();
     }
-    public void actualizarReview(Date fecha, String nuevoNombre, byte[] nuevaImagen, int nuevoAno, String nuevaResena, int nuevaPunt) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        public void actualizarReview(String fecha, String nuevoNombre, byte[] nuevaImagen, int nuevoAno, String nuevaResena, int nuevaPunt) {
+            SQLiteDatabase db = this.getWritableDatabase();
 
-        ContentValues values = new ContentValues();
-        values.put("Nombre", nuevoNombre);
-        values.put("Imagen", nuevaImagen);
-        values.put("Ano", nuevoAno);
-        values.put("Resena", nuevaResena);
-        values.put("Puntuacion", nuevaPunt);
+            ContentValues values = new ContentValues();
+            values.put("Nombre", nuevoNombre);
+            values.put("Imagen", nuevaImagen);
+            values.put("Ano", nuevoAno);
+            values.put("Resena", nuevaResena);
+            values.put("Puntuacion", nuevaPunt);
 
-        // Convertir la fecha a un formato de cadena que coincida con el formato en la base de datos
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        String fechaString = sdf.format(fecha);
+            String[] arg = new String[]{fecha};
 
-        // Actualizar la fila basada en la columna 'Fecha'
-        db.update("Review", values, "Fecha=?", new String[]{fechaString});
+            // Actualizar la fila basada en la columna 'Fecha'
+            System.out.println(db.update("Review", values, "Fecha=?", arg));
 
-        db.close();
+            db.close();
     }
     public JSONArray visualizarLista() throws JSONException {
         SQLiteDatabase db = this.getReadableDatabase();
         JSONArray js = new JSONArray();
         Cursor c = db.rawQuery("SELECT Fecha, Nombre, Imagen, Ano, Puntuacion, Resena FROM Review",null);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
         while (c.moveToNext()){
             JSONObject j = new JSONObject();
-            LocalDate l = LocalDate.parse(c.getString(0), formatter);
-            j.put("Fecha",l);
+            j.put("Fecha",c.getString(0));
             j.put("Nombre",c.getString(1));
             j.put("Imagen",c.getBlob(2));
             j.put("Ano",c.getInt(3));
@@ -91,5 +84,14 @@ public class GestorBD extends SQLiteOpenHelper {
         }
         c.close();
         return js;
+    }
+
+    public void borrarResena(String fecha){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Actualizar la fila basada en la columna 'Fecha'
+        System.out.println(db.delete("Review","Fecha=?", new String[]{fecha}));
+        db.close();
     }
 }

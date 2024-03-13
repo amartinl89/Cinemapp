@@ -1,67 +1,80 @@
 package com.example.cinemapp;
 
-import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+import static java.lang.Integer.parseInt;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
-public class AnadirPelicula extends AppCompatActivity {
-    Integer ano;
-    String nom ;
+public class ModificarReview extends AppCompatActivity {
+    EditText txtNombre;
+    Spinner txtAno;
+    Spinner txtPuntuacion;
+    EditText txtResena;
+    ImageView imgDetalle;
+    Integer anoi;
+    String noms ;
     String review;
-    Integer punt ;
+    Integer punti ;
     byte[] byteArray;
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.anadir_pelicula);
-        anadirAnos(findViewById(R.id.escriibirAnoPeliV));
-        anadirPunt(findViewById(R.id.escribirPuntAnadirPeliV));
-        /*if (savedInstanceState !=null){
-            TextView aux =  (TextView)findViewById(R.id.escribirReviewAnadirPeliV);
-            aux.setText(savedInstanceState.getString("review"));
-            Spinner spi = (Spinner)findViewById(R.id.escribirPuntAnadirPeliV);
-            spi.setSelection(savedInstanceState.getInt("punt"));
-            if (savedInstanceState.getByteArray("img")!=null) {
-                ImageView visImg = (ImageView) findViewById(R.id.visualImgAnadirPeliV);
-                Bitmap bitmap = BitmapFactory.decodeByteArray(savedInstanceState.getByteArray("img")
-                        , 0, savedInstanceState.getByteArray("img").length);
-                visImg.setImageBitmap(bitmap);
-            }
-        }*/
+        txtNombre = findViewById(R.id.escribirNomAnadirPeliV);
+        txtAno = findViewById(R.id.escriibirAnoPeliV);
+        txtPuntuacion = findViewById(R.id.escribirPuntAnadirPeliV);
+        txtResena = findViewById(R.id.escribirReviewAnadirPeliV);
+        imgDetalle = findViewById(R.id.visualImgAnadirPeliV);
+
+        Intent intent = getIntent();
+        String fechaString = intent.getStringExtra("fecha");
+//      //LocalDate fecha = LocalDate.parse(fechaString);
+        String nom = intent.getStringExtra("nom");
+        String ano = intent.getStringExtra("ano");
+        String punt = intent.getStringExtra("punt");
+        byte[] imagenBytes = intent.getByteArrayExtra("imagen");
+        Bitmap imagen = BitmapFactory.decodeByteArray(imagenBytes, 0, imagenBytes.length);
+        String resena = intent.getStringExtra("resena");
+
+        txtNombre.setText(nom);
+        txtResena.setText(resena);
+        imgDetalle.setImageBitmap(imagen);
+        anadirAnos(txtAno);
+        anadirPunt(txtPuntuacion);
+        if(ano!=null) {
+            txtAno.setSelection(parseInt(ano)-1895);
+        }
+        if(punt!=null) {
+            txtPuntuacion.setSelection(parseInt(punt));
+        }
+
+
         Button insImg = findViewById(R.id.escribirImagenAnadirPeliV);
+        insImg.setVisibility(View.VISIBLE);
 
         ActivityResultLauncher<Intent> pickImageLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -79,69 +92,71 @@ public class AnadirPelicula extends AppCompatActivity {
                 pickImageLauncher.launch(intent);
             }
         });
-
-
-        //Botón back
         Button back = findViewById(R.id.backAnadirPeliV);
-
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent e = new Intent(AnadirPelicula.this, MainActivity.class);
-                AnadirPelicula.this.startActivity(e);
+                Intent e = new Intent(ModificarReview.this, VisualizarReviewDetalle.class);
+                e.putExtra("fecha", fechaString);
+                e.putExtra("nom", nom);
+                e.putExtra("ano", ano);
+                e.putExtra("punt", punt);
+                e.putExtra("imagen", imagenBytes);
+                e.putExtra("resena", resena);
+                ModificarReview.this.startActivity(e);
             }
         });
 
-        //Confirmar
-        Button confirmar = findViewById(R.id.confirmarAnadirPeliV);
-        confirmar.setOnClickListener(new View.OnClickListener() {
+        Button conf = findViewById(R.id.confirmarAnadirPeliV);
+        conf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Spinner anoS = (Spinner)findViewById(R.id.escriibirAnoPeliV);
                 TextView nomT = (TextView)findViewById(R.id.escribirNomAnadirPeliV);
-                Calendar calendar = Calendar.getInstance();
-                Date currentDate = calendar.getTime();
-                // Formatear la fecha y hora actual en el formato deseado
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
-                String formattedDate = dateFormat.format(currentDate);
+                Date tiempo = Calendar.getInstance().getTime();
                 ImageView imgI = (ImageView)findViewById(R.id.visualImgAnadirPeliV);
                 TextView reviewT = (TextView)findViewById(R.id.escribirReviewAnadirPeliV);
                 Spinner puntI = (Spinner)findViewById(R.id.escribirPuntAnadirPeliV);
-                Configuration configuration =
-                        getBaseContext().getResources().getConfiguration();
-                Context context =
-                        getBaseContext().createConfigurationContext(configuration);
-                GestorBD bd = new GestorBD(context);
                 try {
-                    ano = (Integer) anoS.getSelectedItem();
-                    nom = nomT.getText().toString();
+                    anoi = (Integer) anoS.getSelectedItem();
+                    noms = nomT.getText().toString();
                     review = reviewT.getText().toString();
-                    punt = (Integer) puntI.getSelectedItem();
+                    punti = (Integer) puntI.getSelectedItem();
                     Bitmap img = ((BitmapDrawable) imgI.getDrawable()).getBitmap();
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
                     img.compress(Bitmap.CompressFormat.PNG, 100, stream);
                     byteArray = stream.toByteArray();
+                    String fechaString = intent.getStringExtra("fecha");
 
                     if(!nom.equals("")) {
-                        bd.insertarReview(formattedDate, nom, byteArray, ano, review, punt);
-                        img.recycle();
-                        DialogFragment popup = new PopUpCreado();
-                        popup.show(getSupportFragmentManager(), "creado");
+                        Intent e = new Intent(ModificarReview.this, ModificarReview.class);
+                        DialogFragment popup = new PopUpModificado();
+                        e.putExtra("fecha", fechaString);
+                        e.putExtra("nom", noms);
+                        e.putExtra("ano", anoi);
+                        e.putExtra("punt", punti);
+                        e.putExtra("imagen", byteArray);
+                        e.putExtra("resena", review);
+                        popup.show(getSupportFragmentManager(), "modif");
                     }
                     else{
+                        DialogFragment popup = new PopUpCreadoVacio();
+                        popup.show(getSupportFragmentManager(), "vacio");
+                    }
+                }
+                catch (NullPointerException n){
+                    DialogFragment popup = new PopUpCreadoVacio();
+                    popup.show(getSupportFragmentManager(), "vacio");
+                }
 
-                        DialogFragment popup = new PopUpCreadoVacio();
-                        popup.show(getSupportFragmentManager(), "vacio");
-                    }
-                    }
-                    catch (NullPointerException n){
-                        DialogFragment popup = new PopUpCreadoVacio();
-                        popup.show(getSupportFragmentManager(), "vacio");
-                    }
             }
         });
+
+
+
+
+
     }
 
     private void handleImageResult(Uri selectedImageUri) {
@@ -175,9 +190,9 @@ public class AnadirPelicula extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         s.setAdapter(adapter);
     }
-    private void anadirPunt(Spinner s){
-        ArrayList<Integer> l= new ArrayList<>();
-        for (int i=0; i<11;i++){
+    private void anadirPunt(Spinner s) {
+        ArrayList<Integer> l = new ArrayList<>();
+        for (int i = 0; i < 11; i++) {
             l.add(i);
         }
         ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(this,
@@ -185,13 +200,4 @@ public class AnadirPelicula extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         s.setAdapter(adapter);
     }
-
-    /*@Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt("ano",ano);
-        outState.putString("review",review);
-        outState.putByteArray("img",byteArray);
-        outState.putInt("punt",punt);
-    }*/
 }

@@ -14,6 +14,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONArray;
@@ -46,8 +49,8 @@ public class PeliculaAdapter extends RecyclerView.Adapter<PeliculaAdapter.Pelicu
     public void onBindViewHolder(@NonNull PeliculaViewHolder holder, int position) {
         try {
             JSONObject pelicula = listaPeliculas.getJSONObject(position);
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
-            LocalDate fecha = LocalDate.parse(pelicula.getString("Fecha"),formatter);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+            String fecha = pelicula.getString("Fecha");
             String nom = pelicula.getString("Nombre");
             String ano = pelicula.getString("Ano");
             String punt = pelicula.getString("Puntuacion");
@@ -69,8 +72,18 @@ public class PeliculaAdapter extends RecyclerView.Adapter<PeliculaAdapter.Pelicu
                     intent.putExtra("punt", punt);
                     intent.putExtra("imagen", imagenBytes);
                     intent.putExtra("resena", resena);
-
                     PeliculaAdapter.this.parent.startActivity(intent);
+                }
+            });
+            holder.borrarResena.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DialogFragment popup = new PopUpBorrar();
+                    Intent intent = new Intent(parent, VerPelicula.class);
+                    intent.putExtra("fecha", fecha);
+                    ((PopUpBorrar) popup).setParentIntent(intent);
+                    FragmentManager fragmentManager = ((AppCompatActivity) parent).getSupportFragmentManager();
+                    popup.show(fragmentManager, "borrar");
                 }
             });
 
@@ -92,6 +105,7 @@ public class PeliculaAdapter extends RecyclerView.Adapter<PeliculaAdapter.Pelicu
         TextView anoTarjeta;
         TextView puntTarjeta;
         Button verReview;
+        Button borrarResena;
 
         public PeliculaViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -100,6 +114,7 @@ public class PeliculaAdapter extends RecyclerView.Adapter<PeliculaAdapter.Pelicu
             anoTarjeta = itemView.findViewById(R.id.anoTarjeta);
             puntTarjeta = itemView.findViewById(R.id.puntTarjeta);
             verReview = itemView.findViewById(R.id.verReviewVerPeliculaV);
+            borrarResena =itemView.findViewById(R.id.borarrVerPeliculaV);
             // Configura otros elementos de la tarjeta si es necesario
         }
     }

@@ -21,7 +21,6 @@ public class PopUpCreadoVacio extends DialogFragment {
         builder.setNeutralButton("Vale",new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Intent e = new Intent(getActivity(), AnadirPelicula.class);
                 PopUpCreadoVacio.this.getActivity();
             }
         });

@@ -7,32 +7,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import java.time.LocalDate;
 
 public class VisualizarReviewDetalle extends AppCompatActivity {
-    /*private final LocalDate fecha;
-    private final String nom;
-    private final String ano;
-    private final String punt;
-    private final Bitmap imagen;
-    private final String resena;*/
-
-
-   /* public  VisualizarReviewDetalle(LocalDate fecha, String nom, String ano, String punt, Bitmap imagen, String resena)
-    {
-        this.fecha=fecha;
-        this.nom = nom;
-        this.ano = ano;
-        this.punt=punt;
-        this.imagen=imagen;
-        this.resena=resena;
-    }*/
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.visualizar_review_detalle);
@@ -44,7 +29,7 @@ public class VisualizarReviewDetalle extends AppCompatActivity {
 
         Intent intent = getIntent();
         String fechaString = intent.getStringExtra("fecha");
-//        LocalDate fecha = LocalDate.parse(fechaString);
+        //LocalDate fecha = LocalDate.parse(fechaString);
         String nom = intent.getStringExtra("nom");
         String ano = intent.getStringExtra("ano");
         String punt = intent.getStringExtra("punt");
@@ -60,6 +45,32 @@ public class VisualizarReviewDetalle extends AppCompatActivity {
         txtResena.setText("Reseña: " + resena);
         imgDetalle.setImageBitmap(imagen); // Ajusta según tu lógica para cargar la imagen
 
+        Button back = findViewById(R.id.backDetalleV);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent e = new Intent(VisualizarReviewDetalle.this, VerPelicula.class);
+                VisualizarReviewDetalle.this.startActivity(e);
+            }
+        });
+
+        Button modif = findViewById(R.id.modifDetalleV);
+
+
+        modif.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent e = new Intent(VisualizarReviewDetalle.this, ModificarReview.class);
+                e.putExtra("fecha", fechaString);
+                e.putExtra("nom", nom);
+                e.putExtra("ano", ano);
+                e.putExtra("punt", punt);
+                e.putExtra("imagen", imagenBytes);
+                e.putExtra("resena", resena);
+                VisualizarReviewDetalle.this.startActivity(e);
+            }
+        });
 
     }
 }
