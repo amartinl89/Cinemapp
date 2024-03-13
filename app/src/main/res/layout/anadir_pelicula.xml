@@ -101,7 +101,10 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/visualImgAnadirPeliV"
@@ -131,8 +134,10 @@
         android:layout_height="31dp"
         android:layout_marginStart="40dp"
         android:layout_marginTop="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/escribirReviewAnadirPeliV"
         app:layout_constraintStart_toEndOf="@+id/reviewAnadirPeliV"
-        app:layout_constraintTop_toBottomOf="@+id/escriibirAnoPeliV" />
+        app:layout_constraintTop_toBottomOf="@+id/escriibirAnoPeliV"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

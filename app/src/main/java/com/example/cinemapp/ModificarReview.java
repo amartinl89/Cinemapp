@@ -66,7 +66,7 @@ public class ModificarReview extends AppCompatActivity {
         anadirAnos(txtAno);
         anadirPunt(txtPuntuacion);
         if(ano!=null) {
-            txtAno.setSelection(parseInt(ano)-1895);
+            txtAno.setSelection(2024-parseInt(ano));
         }
         if(punt!=null) {
             txtPuntuacion.setSelection(parseInt(punt));
@@ -124,21 +124,23 @@ public class ModificarReview extends AppCompatActivity {
                     punti = (Integer) puntI.getSelectedItem();
                     Bitmap img = ((BitmapDrawable) imgI.getDrawable()).getBitmap();
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
-
-                    img.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    Bitmap resizedBitmap = Bitmap.createScaledBitmap(img, 200, 200, false);
+                    resizedBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
                     byteArray = stream.toByteArray();
                     String fechaString = intent.getStringExtra("fecha");
 
                     if(!nom.equals("")) {
                         Intent e = new Intent(ModificarReview.this, ModificarReview.class);
                         DialogFragment popup = new PopUpModificado();
-                        e.putExtra("fecha", fechaString);
-                        e.putExtra("nom", noms);
-                        e.putExtra("ano", anoi);
-                        e.putExtra("punt", punti);
-                        e.putExtra("imagen", byteArray);
-                        e.putExtra("resena", review);
-                        popup.show(getSupportFragmentManager(), "modif");
+                        /*e.putExtra("fechaM", fechaString);
+                        e.putExtra("nomM", noms);
+                        e.putExtra("anoM", anoi);
+                        e.putExtra("puntM", punti);
+                        e.putExtra("imagenM", byteArray);
+                        e.putExtra("resenaM", review);*/
+                        ((PopUpModificado) popup).setDatos(fechaString,noms,String.valueOf(anoi)
+                                ,String.valueOf(punti),byteArray,review);
+                        popup.show(getSupportFragmentManager(), "modificado");
                     }
                     else{
                         DialogFragment popup = new PopUpCreadoVacio();

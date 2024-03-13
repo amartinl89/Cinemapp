@@ -119,14 +119,16 @@ public class AnadirPelicula extends AppCompatActivity {
                     review = reviewT.getText().toString();
                     punt = (Integer) puntI.getSelectedItem();
                     Bitmap img = ((BitmapDrawable) imgI.getDrawable()).getBitmap();
+                    Bitmap resizedBitmap = Bitmap.createScaledBitmap(img, 200, 200, false);
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
-                    img.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    resizedBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
                     byteArray = stream.toByteArray();
 
                     if(!nom.equals("")) {
                         bd.insertarReview(formattedDate, nom, byteArray, ano, review, punt);
                         img.recycle();
+                        resizedBitmap.recycle();
                         DialogFragment popup = new PopUpCreado();
                         popup.show(getSupportFragmentManager(), "creado");
                     }

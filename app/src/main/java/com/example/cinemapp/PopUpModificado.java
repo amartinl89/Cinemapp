@@ -21,6 +21,22 @@ import java.util.Date;
 import java.util.Locale;
 
 public class PopUpModificado extends DialogFragment {
+    String fechaString;
+    String nom;
+    String ano;
+    String punt;
+    byte[] imagenBytes;
+    String resena;
+
+    public void setDatos(String fechaString, String nom, String ano, String punt, byte[] imagenBytes, String resena) {
+        this.fechaString=fechaString;
+        this.nom = nom;
+        this.ano = ano;
+        this.punt = punt;
+        this.imagenBytes = imagenBytes;
+        this.resena = resena;
+
+    }
     @NonNull
     @Override
 
@@ -33,13 +49,14 @@ public class PopUpModificado extends DialogFragment {
         builder.setPositiveButton("Vale",new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                String fechaString = intent.getStringExtra("fecha");
+                /*String fechaString = intent.getStringExtra("fecha");
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-                String nom = intent.getStringExtra("nom");
-                String ano = intent.getStringExtra("ano");
-                String punt = intent.getStringExtra("punt");
-                byte[] imagenBytes = intent.getByteArrayExtra("imagen");
-                String resena = intent.getStringExtra("resena");
+                String nom = intent.getStringExtra("nomM");
+                String ano = intent.getStringExtra("anoM");
+                String punt = intent.getStringExtra("puntM");
+                byte[] imagenBytes = intent.getByteArrayExtra("imagenM");
+                String resena = intent.getStringExtra("resenaM");*/
+
                 GestorBD bd = new GestorBD(getContext());
                 bd.actualizarReview(fechaString,nom,imagenBytes,Integer.parseInt(ano),resena,Integer.parseInt(punt));
                 Intent e = new Intent(getActivity(), VerPelicula.class);
