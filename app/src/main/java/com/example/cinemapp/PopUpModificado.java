@@ -43,10 +43,10 @@ public class PopUpModificado extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Se modificará la reseña"); //Cambiar por strings
+        builder.setTitle(getResources().getString(R.string.popupmodif_str)); //Cambiar por strings
         Intent intent = getActivity().getIntent();
         //Cambiar por strings
-        builder.setPositiveButton("Vale",new DialogInterface.OnClickListener(){
+        builder.setPositiveButton(getResources().getString(R.string.vale_str),new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 /*String fechaString = intent.getStringExtra("fecha");
@@ -63,7 +63,7 @@ public class PopUpModificado extends DialogFragment {
                 PopUpModificado.this.startActivity(e);
             }
         });
-        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getResources().getString(R.string.cancel_str), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 PopUpModificado.this.getActivity();

@@ -27,6 +27,7 @@
         <activity android:label="@string/app_name" android:name=".VerPelicula"/>
         <activity android:label="@string/app_name" android:name=".VisualizarReviewDetalle"/>
         <activity android:label="@string/app_name" android:name=".ModificarReview"/>
+        <activity android:label="@string/app_name" android:name=".Configuracion"/>
     </application>
 
 

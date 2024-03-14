@@ -45,6 +45,7 @@ public class VerPelicula extends AppCompatActivity {
 
         //Botón back
         Button back = findViewById(R.id.backVerPeliculaV);
+        back.setText(getResources().getString(R.string.back_str));
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override

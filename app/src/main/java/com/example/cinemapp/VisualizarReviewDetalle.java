@@ -39,14 +39,14 @@ public class VisualizarReviewDetalle extends AppCompatActivity {
 
         // Establecer los valores en los TextView
         //txtFecha.setText("Fecha: " + fecha.toString()); // Ajusta según el formato que desees
-        txtNombre.setText("Nombre: " + nom);
-        txtAno.setText("Año: " + ano);
-        txtPuntuacion.setText("Puntuación: " + punt);
-        txtResena.setText("Reseña: " + resena);
+        txtNombre.setText(getResources().getString(R.string.nom_peli_str) + nom);
+        txtAno.setText(getResources().getString(R.string.ano_peli_str) + ano);
+        txtPuntuacion.setText(getResources().getString(R.string.punt_peli_str) + punt);
+        txtResena.setText(getResources().getString(R.string.review_str) + resena);
         imgDetalle.setImageBitmap(imagen); // Ajusta según tu lógica para cargar la imagen
 
         Button back = findViewById(R.id.backDetalleV);
-
+        back.setText(getResources().getString(R.string.back_str));
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,6 +56,7 @@ public class VisualizarReviewDetalle extends AppCompatActivity {
         });
 
         Button modif = findViewById(R.id.modifDetalleV);
+        modif.setText(getResources().getString(R.string.modif_str));
 
 
         modif.setOnClickListener(new View.OnClickListener() {

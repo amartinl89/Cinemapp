@@ -10,49 +10,52 @@
         android:id="@+id/verReviewV"
         android:layout_width="266dp"
         android:layout_height="49dp"
-        android:layout_marginTop="173dp"
-        android:layout_marginBottom="200dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="221dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="244dp"
+        android:shape="rectangle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/anadirReviewV"
-        tools:text="Ver"
-        android:shape="rectangle"/>
+        tools:text="Ver" />
 
     <Button
         android:id="@+id/anadirReviewV"
         android:layout_width="266dp"
         android:layout_height="49dp"
-        android:layout_marginTop="293dp"
+        android:layout_marginTop="36dp"
         android:shape="rectangle"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.475"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cinemappMenuV"
+        app:layout_constraintTop_toBottomOf="@+id/logoMenuV"
         tools:text="Añadir" />
 
     <ImageView
         android:id="@+id/logoMenuV"
-        android:layout_width="288dp"
-        android:layout_height="131dp"
-        android:layout_marginBottom="88dp"
+        android:layout_width="237dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="80dp"
         android:src="@drawable/popcorn_cinema_fizzy_drinks_film_popcorn_b34b82fea18cf92baefb2b6d2d0f28a7"
-        app:layout_constraintBottom_toTopOf="@+id/anadirReviewV"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/cinemappMenuV"
-        android:layout_width="165dp"
-        android:layout_height="76dp"
+        android:layout_width="172dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="20dp"
         android:text="CINEMAPP"
         android:textAlignment="center"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/logoMenuV"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.499"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.52" />
 
     <ImageButton
         android:id="@+id/configV"
@@ -70,6 +73,7 @@
 
 
     </ImageButton>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -27,8 +27,8 @@ public class PopUpBorrar extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Se borrará la reseña"); //Cambiar por strings
-        builder.setPositiveButton("Vale", new DialogInterface.OnClickListener() {
+        builder.setTitle(getResources().getString(R.string.popupborrar_str)); //Cambiar por strings
+        builder.setPositiveButton(getResources().getString(R.string.popupborrar_str), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (parentIntent != null) {
@@ -40,7 +40,7 @@ public class PopUpBorrar extends DialogFragment {
             }
         });
 
-        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getResources().getString(R.string.cancel_str), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 PopUpBorrar.this.getActivity();

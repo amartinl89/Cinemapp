@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
@@ -49,7 +50,27 @@ public class ModificarReview extends AppCompatActivity {
         txtPuntuacion = findViewById(R.id.escribirPuntAnadirPeliV);
         txtResena = findViewById(R.id.escribirReviewAnadirPeliV);
         imgDetalle = findViewById(R.id.visualImgAnadirPeliV);
-
+        TextView verAno = (TextView) findViewById(R.id.anoAnadirPeliv);
+        verAno.setText(getResources().getString(R.string.ano_peli_str));
+        TextView verNom = (TextView) findViewById(R.id.nomAnadirPeliV);
+        verNom.setText(getResources().getString(R.string.nom_peli_str));
+        TextView verImagen = (TextView) findViewById(R.id.anadirImagenPeliV);
+        verImagen.setText(getResources().getString(R.string.anadir_portada_str));
+        TextView verPunt = (TextView) findViewById(R.id.puntAnadirPeliV);
+        verPunt.setText(getResources().getString(R.string.punt_peli_str));
+        TextView verReview = (TextView) findViewById(R.id.reviewAnadirPeliV);
+        verReview.setText(getResources().getString(R.string.anadir_review_str));
+        if (savedInstanceState !=null){
+            txtNombre.setText(savedInstanceState.getString("nom"));
+            txtAno.setSelection(2024-savedInstanceState.getInt("ano"));
+            txtPuntuacion.setSelection(savedInstanceState.getInt("punt"));
+            txtResena.setText(savedInstanceState.getString("review"));
+            if (savedInstanceState.getByteArray("img")!=null) {
+                Bitmap bitmap = BitmapFactory.decodeByteArray(savedInstanceState.getByteArray("img")
+                        , 0, savedInstanceState.getByteArray("img").length);
+                imgDetalle.setImageBitmap(bitmap);
+            }
+        }
         Intent intent = getIntent();
         String fechaString = intent.getStringExtra("fecha");
 //      //LocalDate fecha = LocalDate.parse(fechaString);
@@ -75,6 +96,7 @@ public class ModificarReview extends AppCompatActivity {
 
         Button insImg = findViewById(R.id.escribirImagenAnadirPeliV);
         insImg.setVisibility(View.VISIBLE);
+        insImg.setText(getResources().getString(R.string.select_img_str));
 
         ActivityResultLauncher<Intent> pickImageLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -93,6 +115,7 @@ public class ModificarReview extends AppCompatActivity {
             }
         });
         Button back = findViewById(R.id.backAnadirPeliV);
+        back.setText(getResources().getString(R.string.back_str));
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,6 +131,7 @@ public class ModificarReview extends AppCompatActivity {
         });
 
         Button conf = findViewById(R.id.confirmarAnadirPeliV);
+        conf.setText(getResources().getString(R.string.confirmar_str));
         conf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,7 +153,7 @@ public class ModificarReview extends AppCompatActivity {
                     byteArray = stream.toByteArray();
                     String fechaString = intent.getStringExtra("fecha");
 
-                    if(!nom.equals("")) {
+                    if(!noms.equals("")) {
                         Intent e = new Intent(ModificarReview.this, ModificarReview.class);
                         DialogFragment popup = new PopUpModificado();
                         /*e.putExtra("fechaM", fechaString);
@@ -201,5 +225,33 @@ public class ModificarReview extends AppCompatActivity {
                 android.R.layout.simple_spinner_item, l);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         s.setAdapter(adapter);
+    }
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Spinner anoS = (Spinner)findViewById(R.id.escriibirAnoPeliV);
+        TextView nomT = (TextView)findViewById(R.id.escribirNomAnadirPeliV);
+        Date tiempo = Calendar.getInstance().getTime();
+        ImageView imgI = (ImageView)findViewById(R.id.visualImgAnadirPeliV);
+        TextView reviewT = (TextView)findViewById(R.id.escribirReviewAnadirPeliV);
+        Spinner puntI = (Spinner)findViewById(R.id.escribirPuntAnadirPeliV);
+        anoi = (Integer) anoS.getSelectedItem();
+        noms = nomT.getText().toString();
+        review = reviewT.getText().toString();
+        punti = (Integer) puntI.getSelectedItem();
+        try {
+            Bitmap img = ((BitmapDrawable) imgI.getDrawable()).getBitmap();
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            Bitmap resizedBitmap = Bitmap.createScaledBitmap(img, 200, 200, false);
+            resizedBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byteArray = stream.toByteArray();
+            outState.putByteArray("img",byteArray);
+        }catch(NullPointerException e){
+            e.printStackTrace();
+        }
+        outState.putInt("ano",(Integer) anoS.getSelectedItem());
+        outState.putString("review",reviewT.getText().toString());
+        outState.putInt("punt",(Integer) puntI.getSelectedItem());
+        outState.putString("nom",nomT.getText().toString());
+
     }
 }

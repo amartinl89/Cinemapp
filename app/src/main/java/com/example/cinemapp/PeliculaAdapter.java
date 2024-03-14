@@ -62,6 +62,7 @@ public class PeliculaAdapter extends RecyclerView.Adapter<PeliculaAdapter.Pelicu
             Bitmap bitmap = BitmapFactory.decodeByteArray(imagenBytes, 0, imagenBytes.length);
             holder.imagenTarjeta.setImageBitmap(bitmap);
             String resena = pelicula.getString("Resena");
+            holder.verReview.setText(parent.getResources().getString(R.string.ver_detalle_str));
             holder.verReview.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -75,6 +76,7 @@ public class PeliculaAdapter extends RecyclerView.Adapter<PeliculaAdapter.Pelicu
                     PeliculaAdapter.this.parent.startActivity(intent);
                 }
             });
+            holder.borrarResena.setText(parent.getResources().getString(R.string.delete_str));
             holder.borrarResena.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

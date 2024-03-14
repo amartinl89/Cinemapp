@@ -16,9 +16,9 @@ public class PopUpCreadoVacio extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Añade un nombre y una portada a la película"); //Cambiar por strings
+        builder.setTitle(getResources().getString(R.string.popupcreadovacio_str)); //Cambiar por strings
         //Cambiar por strings
-        builder.setNeutralButton("Vale",new DialogInterface.OnClickListener(){
+        builder.setNeutralButton(getResources().getString(R.string.vale_str),new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 PopUpCreadoVacio.this.getActivity();

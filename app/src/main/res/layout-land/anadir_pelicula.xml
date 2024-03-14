@@ -9,42 +9,42 @@
         android:id="@+id/anadirImagenPeliV"
         android:layout_width="149dp"
         android:layout_height="42dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginBottom="28dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
         android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/nomAnadirPeliV"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
     <TextView
         android:id="@+id/nomAnadirPeliV"
         android:layout_width="149dp"
         android:layout_height="42dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginBottom="28dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="140dp"
         android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/anoAnadirPeliv"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/anoAnadirPeliv"
         android:layout_width="149dp"
         android:layout_height="42dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="140dp"
         android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/puntAnadirPeliV"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/escribirNomAnadirPeliV" />
 
     <EditText
         android:id="@+id/escribirReviewAnadirPeliV"
-        android:layout_width="340dp"
-        android:layout_height="84dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginBottom="92dp"
+        android:layout_width="290dp"
+        android:layout_height="91dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="12dp"
         android:ems="10"
         android:inputType="text|textAutoCorrect"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/confirmarAnadirPeliV" />
 
     <Button
         android:id="@+id/backAnadirPeliV"
@@ -60,12 +60,11 @@
         android:id="@+id/reviewAnadirPeliV"
         android:layout_width="149dp"
         android:layout_height="42dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="12dp"
         android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/escribirReviewAnadirPeliV"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.133"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/escribirReviewAnadirPeliV"
+        app:layout_constraintTop_toBottomOf="@+id/escribirImagenAnadirPeliV" />
 
     <Button
         android:id="@+id/confirmarAnadirPeliV"
@@ -82,40 +81,46 @@
         android:id="@+id/escribirNomAnadirPeliV"
         android:layout_width="156dp"
         android:layout_height="52dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="132dp"
         android:ems="10"
         android:inputType="text"
-        app:layout_constraintStart_toEndOf="@+id/nomAnadirPeliV"
-        app:layout_constraintTop_toBottomOf="@+id/escribirImagenAnadirPeliV" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nomAnadirPeliV" />
 
     <Spinner
         android:id="@+id/escriibirAnoPeliV"
         android:layout_width="155dp"
         android:layout_height="33dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="80dp"
-        app:layout_constraintStart_toEndOf="@+id/anoAnadirPeliv"
-        app:layout_constraintTop_toTopOf="@+id/escribirNomAnadirPeliV" />
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="132dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/anoAnadirPeliv" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/anadirImagenPeliV"
+        android:layout_width="434dp"
+        android:layout_height="223dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.05">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/visualImgAnadirPeliV"
-            android:layout_width="369dp"
-            android:layout_height="198dp"
-            android:layout_marginStart="28dp"
-            android:layout_marginBottom="36dp"
-            tools:srcCompat="@tools:sample/avatars" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/visualImgAnadirPeliV"
+                android:layout_width="369dp"
+                android:layout_height="198dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@tools:sample/avatars" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
 
@@ -123,11 +128,9 @@
         android:id="@+id/escribirImagenAnadirPeliV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="80dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
         android:text="Button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/anadirImagenPeliV"
         app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
@@ -135,22 +138,20 @@
         android:id="@+id/escribirPuntAnadirPeliV"
         android:layout_width="154dp"
         android:layout_height="31dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintBottom_toTopOf="@+id/escribirReviewAnadirPeliV"
-        app:layout_constraintStart_toEndOf="@+id/reviewAnadirPeliV"
-        app:layout_constraintTop_toBottomOf="@+id/escriibirAnoPeliV"
-        app:layout_constraintVertical_bias="0.0" />
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="132dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/puntPeliV" />
 
     <TextView
-        android:id="@+id/puntAnadirPeliV"
+        android:id="@+id/puntPeliV"
         android:layout_width="158dp"
         android:layout_height="33dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="128dp"
         android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/reviewAnadirPeliV"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/escriibirAnoPeliV" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

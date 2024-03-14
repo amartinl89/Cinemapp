@@ -26,6 +26,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
+import org.w3c.dom.Text;
+
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.text.ParseException;
@@ -49,19 +51,35 @@ public class AnadirPelicula extends AppCompatActivity {
         setContentView(R.layout.anadir_pelicula);
         anadirAnos(findViewById(R.id.escriibirAnoPeliV));
         anadirPunt(findViewById(R.id.escribirPuntAnadirPeliV));
-        /*if (savedInstanceState !=null){
+        TextView verAno = (TextView) findViewById(R.id.anoAnadirPeliv);
+        verAno.setText(getResources().getString(R.string.ano_peli_str));
+        TextView verNom = (TextView) findViewById(R.id.nomAnadirPeliV);
+        verNom.setText(getResources().getString(R.string.nom_peli_str));
+        TextView verImagen = (TextView) findViewById(R.id.anadirImagenPeliV);
+        verImagen.setText(getResources().getString(R.string.anadir_portada_str));
+        TextView verPunt = (TextView) findViewById(R.id.puntAnadirPeliV);
+        verPunt.setText(getResources().getString(R.string.punt_peli_str));
+        TextView verReview = (TextView) findViewById(R.id.reviewAnadirPeliV);
+        verReview.setText(getResources().getString(R.string.anadir_review_str));
+
+        if (savedInstanceState !=null){
             TextView aux =  (TextView)findViewById(R.id.escribirReviewAnadirPeliV);
             aux.setText(savedInstanceState.getString("review"));
             Spinner spi = (Spinner)findViewById(R.id.escribirPuntAnadirPeliV);
-            spi.setSelection(savedInstanceState.getInt("punt"));
+            spi.setSelection(2024-savedInstanceState.getInt("ano"));
+            Spinner puntI = (Spinner)findViewById(R.id.escribirPuntAnadirPeliV);
+            puntI.setSelection(savedInstanceState.getInt("punt"));
+            TextView nomx = (TextView) findViewById((R.id.escribirNomAnadirPeliV));
+            nomx.setText(savedInstanceState.getString("nom"));
             if (savedInstanceState.getByteArray("img")!=null) {
                 ImageView visImg = (ImageView) findViewById(R.id.visualImgAnadirPeliV);
                 Bitmap bitmap = BitmapFactory.decodeByteArray(savedInstanceState.getByteArray("img")
                         , 0, savedInstanceState.getByteArray("img").length);
                 visImg.setImageBitmap(bitmap);
             }
-        }*/
+        }
         Button insImg = findViewById(R.id.escribirImagenAnadirPeliV);
+        insImg.setText(getResources().getString(R.string.select_img_str));
 
         ActivityResultLauncher<Intent> pickImageLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -83,6 +101,7 @@ public class AnadirPelicula extends AppCompatActivity {
 
         //Botón back
         Button back = findViewById(R.id.backAnadirPeliV);
+        back.setText(getResources().getString(R.string.back_str));
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,6 +113,7 @@ public class AnadirPelicula extends AppCompatActivity {
 
         //Confirmar
         Button confirmar = findViewById(R.id.confirmarAnadirPeliV);
+        confirmar.setText(getResources().getString(R.string.confirmar_str));
         confirmar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -188,12 +208,33 @@ public class AnadirPelicula extends AppCompatActivity {
         s.setAdapter(adapter);
     }
 
-    /*@Override
+    @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt("ano",ano);
-        outState.putString("review",review);
-        outState.putByteArray("img",byteArray);
-        outState.putInt("punt",punt);
-    }*/
+        Spinner anoS = (Spinner)findViewById(R.id.escriibirAnoPeliV);
+        TextView nomT = (TextView)findViewById(R.id.escribirNomAnadirPeliV);
+        Calendar calendar = Calendar.getInstance();
+        Date currentDate = calendar.getTime();
+        // Formatear la fecha y hora actual en el formato deseado
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+        String formattedDate = dateFormat.format(currentDate);
+        ImageView imgI = (ImageView)findViewById(R.id.visualImgAnadirPeliV);
+        TextView reviewT = (TextView)findViewById(R.id.escribirReviewAnadirPeliV);
+        Spinner puntI = (Spinner)findViewById(R.id.escribirPuntAnadirPeliV);
+        outState.putInt("ano",(Integer) anoS.getSelectedItem());
+        outState.putString("review",reviewT.getText().toString());
+        outState.putString("nom",nomT.getText().toString());
+        try {
+            Bitmap img = ((BitmapDrawable) imgI.getDrawable()).getBitmap();
+            Bitmap resizedBitmap = Bitmap.createScaledBitmap(img, 200, 200, false);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            resizedBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byteArray = stream.toByteArray();
+            outState.putByteArray("img",byteArray);
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
+        outState.putInt("punt",(Integer) puntI.getSelectedItem());
+    }
 }
