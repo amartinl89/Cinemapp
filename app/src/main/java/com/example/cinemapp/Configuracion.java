@@ -9,16 +9,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.SwitchCompat;
 
 import java.util.Locale;
 
 public class Configuracion extends AppCompatActivity {
 
     private static final String PREF_IDIOMA = "idioma";
+    private static final String PREF_OSCURO = "oscuro";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +46,8 @@ public class Configuracion extends AppCompatActivity {
         } else {
             es.setChecked(true);
         }
+
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,16 +55,40 @@ public class Configuracion extends AppCompatActivity {
                 Configuracion.this.startActivity(e);
             }
         });
+        SwitchCompat oscuro = findViewById(R.id.oscuroConfig);
+        oscuro.setText(getResources().getString(R.string.oscuro_str));
+        String temaSeleccionado = getSharedPreferences("Configuracion", Context.MODE_PRIVATE).
+                getString(PREF_OSCURO, "null");
+        if(temaSeleccionado.equals("1")){
+            oscuro.setChecked(true);
+        }
 
         Button confirmar = findViewById(R.id.confirmarConfig);
         confirmar.setText(getResources().getString(R.string.confirmar_str));
+
+
         confirmar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (es.isChecked()) {
                     cambiarIdioma("es");
+
                 } else {
                     cambiarIdioma("en");
+                }
+                if (oscuro.isChecked()){
+                    SharedPreferences prefs = getSharedPreferences("Configuracion", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putString(PREF_OSCURO, "1");
+                    editor.apply();
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                }
+                else{
+                    SharedPreferences prefs = getSharedPreferences("Configuracion", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putString(PREF_OSCURO, "0");
+                    editor.apply();
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 }
             }
         });

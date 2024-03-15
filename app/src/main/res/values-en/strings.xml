@@ -24,4 +24,5 @@
     <string name="language_str">Change language</string>
     <string name="es_str">Spanish</string>
     <string name="en_str">English</string>
+    <string name="oscuro_str">Dark mode</string>
 </resources>

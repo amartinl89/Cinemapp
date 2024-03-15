@@ -13,7 +13,7 @@
     <string name="delete_str">Borrar reseña</string>
     <string name="modif_str">Modificar</string>
     <string name="punt_peli_str">Puntuación:</string>
-    <string name="select_img_str">Seleccione una imagen:</string>
+    <string name="select_img_str">Seleccionar imagen:</string>
     <string name="vale_str">Vale</string>
     <string name="cancel_str">Cancelar</string>
     <string name="popupborrar_str">Se borrará la reseña</string>
@@ -24,4 +24,5 @@
     <string name="language_str">Cambia de idioma</string>
     <string name="es_str">Castellano</string>
     <string name="en_str">Inglés</string>
+    <string name="oscuro_str">Modo oscuro</string>
 </resources>
