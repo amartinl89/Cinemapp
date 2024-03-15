@@ -94,9 +94,9 @@
         android:layout_width="155dp"
         android:layout_height="33dp"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="28dp"
         app:layout_constraintStart_toEndOf="@+id/anoAnadirPeliv"
-        app:layout_constraintTop_toTopOf="@+id/escribirNomAnadirPeliV" />
+        app:layout_constraintTop_toBottomOf="@+id/escribirNomAnadirPeliV" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView2"
@@ -123,24 +123,24 @@
         android:id="@+id/escribirImagenAnadirPeliV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
         android:layout_marginEnd="40dp"
+        android:layout_marginBottom="28dp"
         android:text="Button"
+        app:layout_constraintBottom_toTopOf="@+id/nomAnadirPeliV"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/anadirImagenPeliV"
-        app:layout_constraintTop_toBottomOf="@+id/cardView2" />
+        app:layout_constraintHorizontal_bias="0.721"
+        app:layout_constraintStart_toEndOf="@+id/anadirImagenPeliV" />
 
     <Spinner
         android:id="@+id/escribirPuntAnadirPeliV"
         android:layout_width="154dp"
         android:layout_height="31dp"
-        android:layout_marginStart="40dp"
+        android:layout_marginStart="36dp"
         android:layout_marginTop="32dp"
         app:layout_constraintBottom_toTopOf="@+id/escribirReviewAnadirPeliV"
-        app:layout_constraintStart_toEndOf="@+id/reviewAnadirPeliV"
+        app:layout_constraintStart_toEndOf="@+id/puntAnadirPeliV"
         app:layout_constraintTop_toBottomOf="@+id/escriibirAnoPeliV"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.058" />
 
     <TextView
         android:id="@+id/puntAnadirPeliV"
