@@ -74,7 +74,6 @@ public class ModificarReview extends AppCompatActivity {
         }
         Intent intent = getIntent();
             String fechaString = intent.getStringExtra("fecha");
-//      //LocalDate fecha = LocalDate.parse(fechaString);
             String nom = intent.getStringExtra("nom");
             String ano = intent.getStringExtra("ano");
             String punt = intent.getStringExtra("punt");
@@ -138,7 +137,6 @@ public class ModificarReview extends AppCompatActivity {
             public void onClick(View v) {
                 Spinner anoS = (Spinner)findViewById(R.id.escriibirAnoPeliV);
                 TextView nomT = (TextView)findViewById(R.id.escribirNomAnadirPeliV);
-                Date tiempo = Calendar.getInstance().getTime();
                 ImageView imgI = (ImageView)findViewById(R.id.visualImgAnadirPeliV);
                 TextView reviewT = (TextView)findViewById(R.id.escribirReviewAnadirPeliV);
                 Spinner puntI = (Spinner)findViewById(R.id.escribirPuntAnadirPeliV);
@@ -157,12 +155,6 @@ public class ModificarReview extends AppCompatActivity {
                     if(!noms.equals("")) {
                         Intent e = new Intent(ModificarReview.this, ModificarReview.class);
                         DialogFragment popup = new PopUpModificado();
-                        /*e.putExtra("fechaM", fechaString);
-                        e.putExtra("nomM", noms);
-                        e.putExtra("anoM", anoi);
-                        e.putExtra("puntM", punti);
-                        e.putExtra("imagenM", byteArray);
-                        e.putExtra("resenaM", review);*/
                         ((PopUpModificado) popup).setDatos(fechaString,noms,String.valueOf(anoi)
                                 ,String.valueOf(punti),byteArray,review);
                         popup.show(getSupportFragmentManager(), "modificado");
@@ -231,7 +223,6 @@ public class ModificarReview extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         Spinner anoS = (Spinner)findViewById(R.id.escriibirAnoPeliV);
         TextView nomT = (TextView)findViewById(R.id.escribirNomAnadirPeliV);
-        Date tiempo = Calendar.getInstance().getTime();
         ImageView imgI = (ImageView)findViewById(R.id.visualImgAnadirPeliV);
         TextView reviewT = (TextView)findViewById(R.id.escribirReviewAnadirPeliV);
         Spinner puntI = (Spinner)findViewById(R.id.escribirPuntAnadirPeliV);

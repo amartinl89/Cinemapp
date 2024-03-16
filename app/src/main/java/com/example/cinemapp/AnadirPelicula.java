@@ -121,9 +121,7 @@ public class AnadirPelicula extends AppCompatActivity {
                 TextView nomT = (TextView)findViewById(R.id.escribirNomAnadirPeliV);
                 Calendar calendar = Calendar.getInstance();
                 Date currentDate = calendar.getTime();
-                // Formatear la fecha y hora actual en el formato deseado
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
                 String formattedDate = dateFormat.format(currentDate);
                 ImageView imgI = (ImageView)findViewById(R.id.visualImgAnadirPeliV);
                 TextView reviewT = (TextView)findViewById(R.id.escribirReviewAnadirPeliV);
@@ -219,10 +217,7 @@ public class AnadirPelicula extends AppCompatActivity {
         TextView nomT = (TextView)findViewById(R.id.escribirNomAnadirPeliV);
         Calendar calendar = Calendar.getInstance();
         Date currentDate = calendar.getTime();
-        // Formatear la fecha y hora actual en el formato deseado
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
-        String formattedDate = dateFormat.format(currentDate);
         ImageView imgI = (ImageView)findViewById(R.id.visualImgAnadirPeliV);
         TextView reviewT = (TextView)findViewById(R.id.escribirReviewAnadirPeliV);
         Spinner puntI = (Spinner)findViewById(R.id.escribirPuntAnadirPeliV);

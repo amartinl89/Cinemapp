@@ -71,7 +71,6 @@ public class GestorBD extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         JSONArray js = new JSONArray();
         Cursor c = db.rawQuery("SELECT Fecha, Nombre, Imagen, Ano, Puntuacion, Resena FROM Review",null);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
         while (c.moveToNext()){
             JSONObject j = new JSONObject();
             j.put("Fecha",c.getString(0));
@@ -90,7 +89,6 @@ public class GestorBD extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        // Actualizar la fila basada en la columna 'Fecha'
         System.out.println(db.delete("Review","Fecha=?", new String[]{fecha}));
         db.close();
     }

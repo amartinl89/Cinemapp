@@ -49,14 +49,6 @@ public class PopUpModificado extends DialogFragment {
         builder.setPositiveButton(getResources().getString(R.string.vale_str),new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                /*String fechaString = intent.getStringExtra("fecha");
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-                String nom = intent.getStringExtra("nomM");
-                String ano = intent.getStringExtra("anoM");
-                String punt = intent.getStringExtra("puntM");
-                byte[] imagenBytes = intent.getByteArrayExtra("imagenM");
-                String resena = intent.getStringExtra("resenaM");*/
-
                 GestorBD bd = new GestorBD(getContext());
                 bd.actualizarReview(fechaString,nom,imagenBytes,Integer.parseInt(ano),resena,Integer.parseInt(punt));
                 Intent e = new Intent(getActivity(), VerPelicula.class);

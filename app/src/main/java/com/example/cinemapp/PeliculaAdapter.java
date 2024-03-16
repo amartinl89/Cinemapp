@@ -89,7 +89,6 @@ public class PeliculaAdapter extends RecyclerView.Adapter<PeliculaAdapter.Pelicu
                 }
             });
 
-            // Aquí puedes configurar otros elementos de la tarjeta, como la imagen
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -97,9 +96,7 @@ public class PeliculaAdapter extends RecyclerView.Adapter<PeliculaAdapter.Pelicu
     }
 
     @Override
-    public int getItemCount() {
-        return listaPeliculas.length();
-    }
+    public int getItemCount() {return listaPeliculas.length(); }
 
     public static class PeliculaViewHolder extends RecyclerView.ViewHolder {
         ImageView imagenTarjeta;
@@ -117,7 +114,6 @@ public class PeliculaAdapter extends RecyclerView.Adapter<PeliculaAdapter.Pelicu
             puntTarjeta = itemView.findViewById(R.id.puntTarjeta);
             verReview = itemView.findViewById(R.id.verReviewVerPeliculaV);
             borrarResena =itemView.findViewById(R.id.borarrVerPeliculaV);
-            // Configura otros elementos de la tarjeta si es necesario
         }
     }
 }

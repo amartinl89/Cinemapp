@@ -29,7 +29,6 @@ public class VisualizarReviewDetalle extends AppCompatActivity {
 
         Intent intent = getIntent();
         String fechaString = intent.getStringExtra("fecha");
-        //LocalDate fecha = LocalDate.parse(fechaString);
         String nom = intent.getStringExtra("nom");
         String ano = intent.getStringExtra("ano");
         String punt = intent.getStringExtra("punt");
@@ -37,13 +36,11 @@ public class VisualizarReviewDetalle extends AppCompatActivity {
         Bitmap imagen = BitmapFactory.decodeByteArray(imagenBytes, 0, imagenBytes.length);
         String resena = intent.getStringExtra("resena");
 
-        // Establecer los valores en los TextView
-        //txtFecha.setText("Fecha: " + fecha.toString()); // Ajusta según el formato que desees
         txtNombre.setText(getResources().getString(R.string.nom_peli_str) + nom);
         txtAno.setText(getResources().getString(R.string.ano_peli_str) + ano);
         txtPuntuacion.setText(getResources().getString(R.string.punt_peli_str) + punt);
         txtResena.setText(getResources().getString(R.string.review_str) + resena);
-        imgDetalle.setImageBitmap(imagen); // Ajusta según tu lógica para cargar la imagen
+        imgDetalle.setImageBitmap(imagen);
 
         Button back = findViewById(R.id.backDetalleV);
         back.setText(getResources().getString(R.string.back_str));
