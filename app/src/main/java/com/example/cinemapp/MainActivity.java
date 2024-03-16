@@ -1,15 +1,19 @@
 package com.example.cinemapp;
 
-import static android.app.UiModeManager.MODE_NIGHT_YES;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -21,11 +25,14 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
     private static final String PREF_IDIOMA = "idioma";
     private static final String PREF_OSCURO = "oscuro";
+    private static final String CHANNEL_ID = "noti";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setPreferencias();
+        
         Button botAnadirPelicula = findViewById( R.id.anadirReviewV);
         botAnadirPelicula.setText(getResources().getString(R.string.anadir_peli_str));
         botAnadirPelicula.setOnClickListener(new View.OnClickListener() {
@@ -78,4 +85,5 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
 }

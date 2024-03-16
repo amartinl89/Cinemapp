@@ -25,4 +25,6 @@
     <string name="es_str">Spanish</string>
     <string name="en_str">English</string>
     <string name="oscuro_str">Dark mode</string>
+    <string name="noti_nom_str">Review unfinished</string>
+    <string name="noti_descr_str">Write a review for</string>
 </resources>

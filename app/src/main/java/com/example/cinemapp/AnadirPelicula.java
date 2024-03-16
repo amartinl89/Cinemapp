@@ -150,6 +150,10 @@ public class AnadirPelicula extends AppCompatActivity {
                         img.recycle();
                         resizedBitmap.recycle();
                         DialogFragment popup = new PopUpCreado();
+                        NotificacionIncompleta noti = new NotificacionIncompleta();
+                        if(review.equals("")) {
+                            noti.mostrarNotificacion(context,nom);
+                        }
                         popup.show(getSupportFragmentManager(), "creado");
                     }
                     else{

@@ -2,6 +2,7 @@ package com.example.cinemapp;
 
 import static java.lang.Integer.parseInt;
 
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -72,14 +73,14 @@ public class ModificarReview extends AppCompatActivity {
             }
         }
         Intent intent = getIntent();
-        String fechaString = intent.getStringExtra("fecha");
+            String fechaString = intent.getStringExtra("fecha");
 //      //LocalDate fecha = LocalDate.parse(fechaString);
-        String nom = intent.getStringExtra("nom");
-        String ano = intent.getStringExtra("ano");
-        String punt = intent.getStringExtra("punt");
-        byte[] imagenBytes = intent.getByteArrayExtra("imagen");
-        Bitmap imagen = BitmapFactory.decodeByteArray(imagenBytes, 0, imagenBytes.length);
-        String resena = intent.getStringExtra("resena");
+            String nom = intent.getStringExtra("nom");
+            String ano = intent.getStringExtra("ano");
+            String punt = intent.getStringExtra("punt");
+            byte[] imagenBytes = intent.getByteArrayExtra("imagen");
+            Bitmap imagen = BitmapFactory.decodeByteArray(imagenBytes, 0, imagenBytes.length);
+            String resena = intent.getStringExtra("resena");
 
         txtNombre.setText(nom);
         txtResena.setText(resena);
