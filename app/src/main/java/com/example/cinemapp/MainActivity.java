@@ -25,7 +25,6 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
     private static final String PREF_IDIOMA = "idioma";
     private static final String PREF_OSCURO = "oscuro";
-    private static final String CHANNEL_ID = "noti";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
