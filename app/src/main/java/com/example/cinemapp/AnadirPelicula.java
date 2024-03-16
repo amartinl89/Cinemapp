@@ -89,6 +89,7 @@ public class AnadirPelicula extends AppCompatActivity {
                     }
                 }
         );
+        //Intent implícito para selecionar imágenes
         insImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,30 +138,32 @@ public class AnadirPelicula extends AppCompatActivity {
                     review = reviewT.getText().toString();
                     punt = (Integer) puntI.getSelectedItem();
                     Bitmap img = ((BitmapDrawable) imgI.getDrawable()).getBitmap();
+                    //Para que no haya problemas con imágenes grandes
                     Bitmap resizedBitmap = Bitmap.createScaledBitmap(img, 200, 200, false);
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
                     resizedBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
                     byteArray = stream.toByteArray();
-
+                    //Si el nombre no está vacío
                     if(!nom.equals("")) {
                         bd.insertarReview(formattedDate, nom, byteArray, ano, review, punt);
                         img.recycle();
                         resizedBitmap.recycle();
                         DialogFragment popup = new PopUpCreado();
                         NotificacionIncompleta noti = new NotificacionIncompleta();
-                        if(review.equals("")) {
+                        if(review.equals("")) { //Notificación si la reseña está vacía
                             noti.mostrarNotificacion(context,nom);
                         }
-                        popup.show(getSupportFragmentManager(), "creado");
+                        popup.show(getSupportFragmentManager(), "creado"); //Aparece diálogo creado
                     }
                     else{
-
+                        //Si el nombre está vacío
                         DialogFragment popup = new PopUpCreadoVacio();
                         popup.show(getSupportFragmentManager(), "vacio");
                     }
                     }
                     catch (NullPointerException n){
+                        //Si la foto está vacía
                         DialogFragment popup = new PopUpCreadoVacio();
                         popup.show(getSupportFragmentManager(), "vacio");
                     }
@@ -188,7 +191,7 @@ public class AnadirPelicula extends AppCompatActivity {
     }
 
 
-
+    //Función para añadir años al spinner de años
     private void anadirAnos(Spinner s){
         ArrayList<Integer> l= new ArrayList<>();
         for (int i=2024; i>=1895;i--){
@@ -199,6 +202,7 @@ public class AnadirPelicula extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         s.setAdapter(adapter);
     }
+    //Función para añadir puntos al spinner de puntos
     private void anadirPunt(Spinner s){
         ArrayList<Integer> l= new ArrayList<>();
         for (int i=0; i<11;i++){

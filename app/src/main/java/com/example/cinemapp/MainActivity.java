@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
+    //Función que sirve para aplicar las preferencias del usuario
     private void setPreferencias() {
         SharedPreferences prefs = getSharedPreferences("Configuracion", Context.MODE_PRIVATE);
         String idiomaSeleccionado = prefs.getString(PREF_IDIOMA, "null");

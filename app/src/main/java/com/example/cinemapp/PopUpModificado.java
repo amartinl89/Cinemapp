@@ -43,22 +43,20 @@ public class PopUpModificado extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(getResources().getString(R.string.popupmodif_str)); //Cambiar por strings
-        Intent intent = getActivity().getIntent();
-        //Cambiar por strings
+        builder.setTitle(getResources().getString(R.string.popupmodif_str));
         builder.setPositiveButton(getResources().getString(R.string.vale_str),new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 GestorBD bd = new GestorBD(getContext());
                 bd.actualizarReview(fechaString,nom,imagenBytes,Integer.parseInt(ano),resena,Integer.parseInt(punt));
                 Intent e = new Intent(getActivity(), VerPelicula.class);
-                PopUpModificado.this.startActivity(e);
+                PopUpModificado.this.startActivity(e); //Se vuelve a la vista verpeliculas
             }
         });
         builder.setNegativeButton(getResources().getString(R.string.cancel_str), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                PopUpModificado.this.getActivity();
+                PopUpModificado.this.getActivity(); //No se hace nada
             }
         });
 

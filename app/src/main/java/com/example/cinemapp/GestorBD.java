@@ -67,8 +67,8 @@ public class GestorBD extends SQLiteOpenHelper {
 
             db.close();
     }
-    public JSONArray visualizarLista() throws JSONException {
-        SQLiteDatabase db = this.getReadableDatabase();
+    public JSONArray visualizarLista() throws JSONException { //La selección se devolverá en
+        SQLiteDatabase db = this.getReadableDatabase(); //formato JSONArray
         JSONArray js = new JSONArray();
         Cursor c = db.rawQuery("SELECT Fecha, Nombre, Imagen, Ano, Puntuacion, Resena FROM Review",null);
         while (c.moveToNext()){

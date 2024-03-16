@@ -27,23 +27,23 @@ public class PopUpBorrar extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(getResources().getString(R.string.popupborrar_str)); //Cambiar por strings
+        builder.setTitle(getResources().getString(R.string.popupborrar_str));
         builder.setPositiveButton(getResources().getString(R.string.popupborrar_str), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (parentIntent != null) {
-                    String fecha = parentIntent.getStringExtra("fecha");
+                    String fecha = parentIntent.getStringExtra("fecha"); //Se borra
                     GestorBD bd = new GestorBD(getContext());
                     bd.borrarResena(fecha);
                 }
-                PopUpBorrar.this.startActivity(parentIntent);
+                PopUpBorrar.this.startActivity(parentIntent); //Se recarga la página
             }
         });
 
         builder.setNegativeButton(getResources().getString(R.string.cancel_str), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                PopUpBorrar.this.getActivity();
+                PopUpBorrar.this.getActivity(); //No se hace nada
             }
         });
         return builder.create();

@@ -40,7 +40,7 @@ public class Configuracion extends AppCompatActivity {
 
         Locale currentLocale = getResources().getConfiguration().getLocales().get(0);
         String check = currentLocale.getLanguage();
-
+        //Para seleccionar el switch en el que está el idioma ahora mismo
         if (check.equals("en")) {
             en.setChecked(true);
         } else {
@@ -66,7 +66,7 @@ public class Configuracion extends AppCompatActivity {
         Button confirmar = findViewById(R.id.confirmarConfig);
         confirmar.setText(getResources().getString(R.string.confirmar_str));
 
-
+        //Para aplicar los cambios
         confirmar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,7 +81,7 @@ public class Configuracion extends AppCompatActivity {
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putString(PREF_OSCURO, "1");
                     editor.apply();
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES); //Modo nocturno
                 }
                 else{
                     SharedPreferences prefs = getSharedPreferences("Configuracion", Context.MODE_PRIVATE);
@@ -95,7 +95,7 @@ public class Configuracion extends AppCompatActivity {
 
 
     }
-
+    //Función para cambiar el idioma
     private void cambiarIdioma(String languageCode) {
         SharedPreferences prefs = getSharedPreferences("Configuracion", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();

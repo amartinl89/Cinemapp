@@ -21,6 +21,7 @@ public class NotificacionIncompleta {
         Intent intent = new Intent(context, VerPelicula.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+        //Se crea un canal si no existe
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "completar";
             String description = "";
@@ -30,7 +31,7 @@ public class NotificacionIncompleta {
             NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
-
+        //Se hace la notificación
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.popcorn_cinema_fizzy_drinks_film_popcorn_b34b82fea18cf92baefb2b6d2d0f28a7)
                 .setContentTitle(context.getString(R.string.noti_nom_str))
@@ -38,7 +39,7 @@ public class NotificacionIncompleta {
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
-
+        //Se notifica
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         if (ContextCompat.checkSelfPermission( context,android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
             notificationManager.notify(NOTIFICATION_ID, builder.build());

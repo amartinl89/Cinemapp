@@ -66,6 +66,7 @@ public class PeliculaAdapter extends RecyclerView.Adapter<PeliculaAdapter.Pelicu
             holder.verReview.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    //Se guardan los datos de la reseña para la próxima vista
                     Intent intent = new Intent(parent, VisualizarReviewDetalle.class);
                     intent.putExtra("fecha", fecha);
                     intent.putExtra("nom", nom);

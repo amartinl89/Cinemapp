@@ -59,6 +59,7 @@ public class VisualizarReviewDetalle extends AppCompatActivity {
         modif.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Se guardan los datos para la próxima vista
                 Intent e = new Intent(VisualizarReviewDetalle.this, ModificarReview.class);
                 e.putExtra("fecha", fechaString);
                 e.putExtra("nom", nom);
