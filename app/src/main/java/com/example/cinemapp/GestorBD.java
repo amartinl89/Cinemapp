@@ -32,12 +32,20 @@ public class GestorBD extends SQLiteOpenHelper {
         // Crear la tabla Review
         String queryCrearTabla = "CREATE TABLE IF NOT EXISTS Review (" +
                 "Fecha DATETIME PRIMARY KEY, " +
+                "Id INT,"+
                 "Nombre VARCHAR(255), " +
                 "Imagen BLOB, " +
                 "Ano INTEGER, " +
                 "Puntuacion INTEGER," +
-                "Resena TEXT)";
+                "Resena TEXT," +
+                "FOREIGN KEY (Id) REFERENCES Usuario(Id)" +
+                ")";
         db.execSQL(queryCrearTabla);
+        String queryCrearTablaUser = "CREATE TABLE IF NOT EXISTS Usuario (" +
+                "Id INT PRIMARY KEY, " +
+                "Nombre VARCHAR(32),"+
+                "Contrasena VARCHAR(32))";
+        db.execSQL(queryCrearTablaUser);
     }
 
     @Override

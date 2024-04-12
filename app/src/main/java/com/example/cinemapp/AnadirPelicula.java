@@ -2,8 +2,10 @@ package com.example.cinemapp;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -12,6 +14,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -24,12 +28,17 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.DialogFragment;
 
 import org.w3c.dom.Text;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -40,11 +49,13 @@ import java.util.Date;
 import java.util.Locale;
 
 public class AnadirPelicula extends AppCompatActivity {
+    private static final int REQUEST_IMAGE_CAPTURE = 1  ;
     Integer ano;
     String nom ;
     String review;
     Integer punt ;
     byte[] byteArray;
+    private Uri cameraImageUri;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,13 +100,64 @@ public class AnadirPelicula extends AppCompatActivity {
                     }
                 }
         );
+
+        ActivityResultLauncher<Intent> takePictureLauncher =
+                registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                    if (result.getResultCode() == RESULT_OK && result.getData()!= null) {
+                        Bundle bundle = result.getData().getExtras();
+                        Bitmap laminiatura = (Bitmap) bundle.get("data");
+//GUARDAR COMO FICHERO
+// Memoria externa
+                        File eldirectorio = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+                        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+                        String nombrefichero = "IMG_" + timeStamp + "_";
+                        File imagenFich = new File(eldirectorio, nombrefichero + ".jpg");
+                        OutputStream os;
+                        try {
+                            os = new FileOutputStream(imagenFich);
+                            laminiatura.compress(Bitmap.CompressFormat.JPEG, 100, os);
+                            ImageView imageView = findViewById(R.id.visualImgAnadirPeliV);
+                            imageView.setImageBitmap(laminiatura);
+                            os.flush();
+                            os.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
         //Intent implícito para selecionar imágenes
-        insImg.setOnClickListener(new View.OnClickListener() {
+        /*insImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType("image/*");
                 pickImageLauncher.launch(intent);
+            }
+        });*/
+
+
+        insImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                builder.setTitle("Seleccionar Imagen");
+                builder.setItems(new CharSequence[]{"Galería", "Cámara"}, (dialog, which) -> {
+                    switch (which) {
+                        case 0:
+                            // Abrir galería
+                            Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            galleryIntent.setType("image/*");
+                            pickImageLauncher.launch(galleryIntent);
+                            break;
+                        case 1:
+                            // Abrir cámara
+                            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            takePictureLauncher.launch(cameraIntent);
+
+                            break;
+                    }
+                });
+                builder.show();
             }
         });
 
@@ -239,5 +301,7 @@ public class AnadirPelicula extends AppCompatActivity {
             e.printStackTrace();
         }
         outState.putInt("punt",(Integer) puntI.getSelectedItem());
+
     }
+
 }

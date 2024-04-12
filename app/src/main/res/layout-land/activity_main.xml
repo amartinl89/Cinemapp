@@ -7,14 +7,25 @@
     tools:context=".MainActivity">
 
     <Button
+        android:id="@+id/salirMenu"
+        android:layout_width="263dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="220dp"
+        android:layout_marginTop="16dp"
+        android:text="Button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/verReviewV" />
+
+    <Button
         android:id="@+id/verReviewV"
         android:layout_width="266dp"
         android:layout_height="49dp"
         android:layout_marginStart="221dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="244dp"
         android:shape="rectangle"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/anadirReviewV"
         tools:text="Ver" />
