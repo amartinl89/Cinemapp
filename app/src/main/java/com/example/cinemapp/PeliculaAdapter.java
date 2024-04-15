@@ -1,7 +1,5 @@
 package com.example.cinemapp;
 
-import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -25,16 +23,19 @@ import org.json.JSONObject;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Base64;
 import java.util.Date;
 import java.util.Locale;
 
 public class PeliculaAdapter extends RecyclerView.Adapter<PeliculaAdapter.PeliculaViewHolder> {
 
     private final JSONArray listaPeliculas;
+    private final String usuario;
     Context parent;
 
-    public PeliculaAdapter(JSONArray listaPeliculas) {
+    public PeliculaAdapter(JSONArray listaPeliculas, String usuario) {
         this.listaPeliculas = listaPeliculas;
+        this.usuario  = usuario;
     }
 
     @NonNull
@@ -58,7 +59,10 @@ public class PeliculaAdapter extends RecyclerView.Adapter<PeliculaAdapter.Pelicu
             holder.nombreTarjeta.setText(nom);
             holder.anoTarjeta.setText(ano);
             holder.puntTarjeta.setText(punt);
-            byte[] imagenBytes = (byte[]) pelicula.get("Imagen");
+            String base64 = (String) pelicula.get("Imagen");
+            //byte[] imagenBytes = (byte[]) pelicula.get("Imagen");
+            byte[] imagenBytes = Base64.getDecoder().decode(base64);
+            System.out.println("Longitud de imagenBytes: " + imagenBytes.length);
             Bitmap bitmap = BitmapFactory.decodeByteArray(imagenBytes, 0, imagenBytes.length);
             holder.imagenTarjeta.setImageBitmap(bitmap);
             String resena = pelicula.getString("Resena");
@@ -74,6 +78,7 @@ public class PeliculaAdapter extends RecyclerView.Adapter<PeliculaAdapter.Pelicu
                     intent.putExtra("punt", punt);
                     intent.putExtra("imagen", imagenBytes);
                     intent.putExtra("resena", resena);
+                    intent.putExtra("nombre",usuario);
                     PeliculaAdapter.this.parent.startActivity(intent);
                 }
             });
@@ -84,6 +89,7 @@ public class PeliculaAdapter extends RecyclerView.Adapter<PeliculaAdapter.Pelicu
                     DialogFragment popup = new PopUpBorrar();
                     Intent intent = new Intent(parent, VerPelicula.class);
                     intent.putExtra("fecha", fecha);
+                    intent.putExtra("nombre",usuario);
                     ((PopUpBorrar) popup).setParentIntent(intent);
                     FragmentManager fragmentManager = ((AppCompatActivity) parent).getSupportFragmentManager();
                     popup.show(fragmentManager, "borrar");

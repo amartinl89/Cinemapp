@@ -126,6 +126,7 @@ public class ModificarReview extends AppCompatActivity {
                 e.putExtra("punt", punt);
                 e.putExtra("imagen", imagenBytes);
                 e.putExtra("resena", resena);
+                e.putExtra("nombre",getIntent().getStringExtra("nombre"));
                 ModificarReview.this.startActivity(e);
             }
         });
@@ -156,7 +157,7 @@ public class ModificarReview extends AppCompatActivity {
                         Intent e = new Intent(ModificarReview.this, ModificarReview.class);
                         DialogFragment popup = new PopUpModificado();
                         ((PopUpModificado) popup).setDatos(fechaString,noms,String.valueOf(anoi)
-                                ,String.valueOf(punti),byteArray,review);
+                                ,String.valueOf(punti),byteArray,review,getIntent().getStringExtra("nombre"));
                         popup.show(getSupportFragmentManager(), "modificado");
                     }
                     else{

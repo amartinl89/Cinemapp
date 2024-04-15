@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
@@ -29,7 +30,7 @@ public class IniciarSesion extends AppCompatActivity {
             public void onClick(View view) {
                 TextView escrNom = (TextView) findViewById(R.id.escribirNomInicio);
                 TextView escrCont = (TextView) findViewById(R.id.escribirContInicio);
-                // Crear un objeto Data con la operación que quieres realizar
+                //Se crea un objeto Data con la operación a realizar y con los datos del cuerpo
                 Data inputData = new Data.Builder()
                         .putString("operation", "obtenerUsuario")
                         .putString("nombre", escrNom.getText().toString())
@@ -64,15 +65,15 @@ public class IniciarSesion extends AppCompatActivity {
 
                                     if (j.getBoolean("usuario")) {
                                         Intent e = new Intent(IniciarSesion.this, MainActivity.class);
+                                        e.putExtra("nombre", escrNom.getText().toString());
+                                        e.putExtra("contrasena", escrCont.getText().toString());
                                         IniciarSesion.this.startActivity(e);
                                     }
                                     // Manejar el resultado aquí
-                                } else if (workInfo.getState() == WorkInfo.State.FAILED) {
-                                    // Trabajo fallido
-                                    // Manejar el error aquí
                                 }
                                 } catch (JSONException e) {
-                                    throw new RuntimeException(e);
+                                    DialogFragment popup = new PopUpIniciar();
+                                    popup.show(getSupportFragmentManager(), "incorrecto"); //Aparece diálogo creado
                                 }
 
                             }

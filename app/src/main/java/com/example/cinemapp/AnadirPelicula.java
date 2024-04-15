@@ -30,8 +30,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.Observer;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 
-import org.w3c.dom.Text;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -44,6 +50,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -170,6 +177,7 @@ public class AnadirPelicula extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent e = new Intent(AnadirPelicula.this, MainActivity.class);
+                e.putExtra("nombre",getIntent().getStringExtra("nombre"));
                 AnadirPelicula.this.startActivity(e);
             }
         });
@@ -208,15 +216,51 @@ public class AnadirPelicula extends AppCompatActivity {
                     byteArray = stream.toByteArray();
                     //Si el nombre no está vacío
                     if(!nom.equals("")) {
-                        bd.insertarReview(formattedDate, nom, byteArray, ano, review, punt);
-                        img.recycle();
-                        resizedBitmap.recycle();
-                        DialogFragment popup = new PopUpCreado();
-                        NotificacionIncompleta noti = new NotificacionIncompleta();
-                        if(review.equals("")) { //Notificación si la reseña está vacía
-                            noti.mostrarNotificacion(context,nom);
-                        }
-                        popup.show(getSupportFragmentManager(), "creado"); //Aparece diálogo creado
+                        String b64 = Base64.getEncoder().encodeToString(byteArray);
+                        //bd.insertarReview(formattedDate, nom, byteArray, ano, review, punt);
+                        Data inputData = new Data.Builder()
+                                .putString("operation", "insertarReview")
+                                .putString("nombre", nom)
+                                //.putByteArray("imagen", b64)
+                                .putString("imagen",b64)
+                                .putString("ano", ano.toString())
+                                .putString("puntuacion", punt.toString())
+                                .putString("fecha", formattedDate)
+                                .putString("resena", review)
+                                .putString("usuario",getIntent().getStringExtra("nombre"))
+                                .build();
+
+                        OneTimeWorkRequest otwr = new
+                                OneTimeWorkRequest.Builder(ConexionBDWebService.class)
+                                .setInputData(inputData)
+                                .build();
+                        WorkManager.getInstance().getWorkInfoByIdLiveData(otwr.getId())
+                                .observe(AnadirPelicula.this, new Observer<WorkInfo>() {
+                                    @Override
+                                    public void onChanged(WorkInfo workInfo) {
+                                        img.recycle();
+                                        resizedBitmap.recycle();
+                                        try {
+                                            if (workInfo != null && workInfo.getState().isFinished()) {
+                                                Data outputData = workInfo.getOutputData();
+                                                String res = outputData.getString("jsonResponse");
+
+                                                JSONObject j = new JSONObject(res);
+                                                DialogFragment popup = new PopUpCreado();
+                                                NotificacionIncompleta noti = new NotificacionIncompleta();
+                                                if (review.equals("")) { //Notificación si la reseña está vacía
+                                                    noti.mostrarNotificacion(context, nom);
+                                                }
+                                                ((PopUpCreado) popup).setDatos(getIntent().getStringExtra("nombre"));
+                                                popup.show(getSupportFragmentManager(), "creado"); //Aparece diálogo creado
+                                            }
+                                        } catch (JSONException e) {
+                                            DialogFragment popup = new  PopUpCreadoVacio();
+                                            popup.show(getSupportFragmentManager(), "vacio");
+                                        }
+                                    }
+                                });
+                        WorkManager.getInstance().enqueue(otwr);
                     }
                     else{
                         //Si el nombre está vacío

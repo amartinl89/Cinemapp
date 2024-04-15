@@ -14,14 +14,21 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Locale;
 
@@ -39,18 +46,40 @@ public class VerPelicula extends AppCompatActivity {
         setPreferencias();
 
         recyclerViewPeliculas = findViewById(R.id.recyclerViewPeliculas);
-        try {
-            GestorBD gestorBD = new GestorBD(this);
-            JSONArray listaPeliculas = gestorBD.visualizarLista();
+            //GestorBD gestorBD = new GestorBD(this);
+            //JSONArray listaPeliculas = gestorBD.visualizarLista();
+            Data inputData = new Data.Builder()
+                    .putString("operation", "visualizarLista")
+                    .putString("usuario",getIntent().getStringExtra("nombre"))
+                    .build();
+            OneTimeWorkRequest otwr = new
+                    OneTimeWorkRequest.Builder(ConexionBDWebService.class)
+                    .setInputData(inputData)
+                    .build();
+            WorkManager.getInstance().getWorkInfoByIdLiveData(otwr.getId())
+                    .observe(VerPelicula.this, new Observer<WorkInfo>() {
+                        @Override
+                        public void onChanged(WorkInfo workInfo) {
+                            try {
+                                if (workInfo != null && workInfo.getState().isFinished()) {
+                                    Data outputData = workInfo.getOutputData();
+                                    String res = outputData.getString("jsonResponse");
 
-            // Configurar el RecyclerView
-            recyclerViewPeliculas.setLayoutManager(new LinearLayoutManager(this));
-            peliculaAdapter = new PeliculaAdapter(listaPeliculas);
-            recyclerViewPeliculas.setAdapter(peliculaAdapter);
+                                    JSONArray listaPeliculas = new JSONArray(res);
+                                    // Configurar el RecyclerView
+                                    recyclerViewPeliculas.setLayoutManager(new LinearLayoutManager(VerPelicula.this));
+                                    peliculaAdapter = new PeliculaAdapter(listaPeliculas, getIntent().getStringExtra("nombre"));
+                                    recyclerViewPeliculas.setAdapter(peliculaAdapter);
+                                }
+                            } catch (JSONException e) {
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+                            }
+                        }
+                    });
+        WorkManager.getInstance().enqueue(otwr);
+
+
+
 
         //Botón back
         Button back = findViewById(R.id.backVerPeliculaV);
@@ -60,6 +89,7 @@ public class VerPelicula extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent e = new Intent(VerPelicula.this, MainActivity.class);
+                e.putExtra("nombre",getIntent().getStringExtra("nombre"));
                 VerPelicula.this.startActivity(e);
             }
         });

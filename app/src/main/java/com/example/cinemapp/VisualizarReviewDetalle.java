@@ -48,6 +48,7 @@ public class VisualizarReviewDetalle extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent e = new Intent(VisualizarReviewDetalle.this, VerPelicula.class);
+                e.putExtra("nombre",getIntent().getStringExtra("nombre"));
                 VisualizarReviewDetalle.this.startActivity(e);
             }
         });
@@ -67,6 +68,7 @@ public class VisualizarReviewDetalle extends AppCompatActivity {
                 e.putExtra("punt", punt);
                 e.putExtra("imagen", imagenBytes);
                 e.putExtra("resena", resena);
+                e.putExtra("nombre",getIntent().getStringExtra("nombre"));
                 VisualizarReviewDetalle.this.startActivity(e);
             }
         });

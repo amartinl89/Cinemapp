@@ -27,4 +27,5 @@
     <string name="oscuro_str">Dark mode</string>
     <string name="noti_nom_str">Review unfinished</string>
     <string name="noti_descr_str">Write a review for</string>
+    <string name="hola_str">Hello %1$s</string>
 </resources>

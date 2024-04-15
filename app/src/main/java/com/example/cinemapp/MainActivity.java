@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent e = new Intent(MainActivity.this, AnadirPelicula.class);
                 e.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                e.putExtra("nombre",getIntent().getStringExtra("nombre") );
                 MainActivity.this.startActivity(e);
             }
         });
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent e = new Intent(MainActivity.this, VerPelicula.class);
+                e.putExtra("nombre",getIntent().getStringExtra("nombre"));
                 MainActivity.this.startActivity(e);
             }
         });
@@ -61,7 +63,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        TextView holaUsu = findViewById(R.id.usuarioReview);
+        holaUsu.setText(getResources().getString(R.string.hola_str,getIntent().getStringExtra("nombre")));
+
     }
+
+
     //Función que sirve para aplicar las preferencias del usuario
     private void setPreferencias() {
         SharedPreferences prefs = getSharedPreferences("Configuracion", Context.MODE_PRIVATE);

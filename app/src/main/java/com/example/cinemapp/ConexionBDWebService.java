@@ -55,133 +55,88 @@ public class ConexionBDWebService extends Worker {
         }
     }
 
-    private Result insertarReview() {
+    private Result insertarReview()  throws JSONException{
         String fecha = getInputData().getString("fecha");
         String usuario = getInputData().getString("usuario");
         String nombre = getInputData().getString("nombre");
+        //byte[] imagen = getInputData().getByteArray("imagen");
         String imagen = getInputData().getString("imagen");
-        int ano = getInputData().getInt("ano", 0);
+        String ano = getInputData().getString("ano");
         String resena = getInputData().getString("resena");
-        int punt = getInputData().getInt("punt", 0);
+        String punt = getInputData().getString("puntuacion");
+        JSONObject j = new JSONObject();
+        j.put("nombre", nombre);
+        j.put("fecha", fecha);
+        j.put("usuario", usuario);
+        j.put("imagen", imagen);
+        j.put("ano", ano);
+        j.put("resena", resena);
+        j.put("puntuacion", punt);
+        j.put("operation", "insertarReview");
 
         try {
-            String apiUrl = BASE_URL + "?operation=insertarReview";
-            URL url = new URL(apiUrl);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setDoOutput(true);
+            //String apiUrl = BASE_URL + "?operation=obtenerUsuario";
+            String response = ApiCliente.executePost(BASE_URL, j.toString());
 
-            // Construir los parámetros para la solicitud POST
-            String postData = "fecha=" + fecha + "&usuario=" + usuario + "&nombre=" + nombre +
-                    "&imagen=" + imagen + "&ano=" + ano + "&resena=" + resena + "&punt=" + punt;
-            byte[] postDataBytes = postData.getBytes(StandardCharsets.UTF_8);
-
-            // Escribir los parámetros en la conexión
-            connection.getOutputStream().write(postDataBytes);
-
-            // Leer la respuesta del servidor
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            StringBuilder response = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                response.append(line);
-            }
-            reader.close();
-
-            connection.disconnect();
-
-            // Analizar la respuesta del servidor
-            JSONObject jsonResponse = new JSONObject(response.toString());
-            boolean success = jsonResponse.getBoolean("success");
-            if (success) {
-                return Result.success();
+            if (response != null) {
+                Data outputData = new Data.Builder()
+                        .putString("jsonResponse", response)
+                        .build();
+                return Result.success(outputData);
             } else {
                 return Result.failure();
             }
         } catch (Exception e) {
-            Log.e(TAG, "Error al insertar revisión: " + e.getMessage());
+            Log.e(TAG, "Error al insertar review: " + e.getMessage());
             return Result.failure();
         }
     }
 
 
-    private Result actualizarReview() {
+    private Result actualizarReview() throws JSONException {
         String fecha = getInputData().getString("fecha");
-        String nuevoNombre = getInputData().getString("nuevoNombre");
-        String nuevaImagen = getInputData().getString("nuevaImagen");
-        int nuevoAno = getInputData().getInt("nuevoAno", 0);
-        String nuevaResena = getInputData().getString("nuevaResena");
-        int nuevaPunt = getInputData().getInt("nuevaPunt", 0);
+        String nombre = getInputData().getString("nuevoNombre");
+        String imagen = getInputData().getString("nuevaImagen");
+        String ano = getInputData().getString("nuevoAno");
+        String resena = getInputData().getString("nuevaResena");
+        String punt = getInputData().getString("nuevaPunt");
+        JSONObject j = new JSONObject();
+        j.put("nuevoNombre", nombre);
+        j.put("fecha", fecha);
+        j.put("nuevaImagen", imagen);
+        j.put("nuevoAno", ano);
+        j.put("nuevaResena", resena);
+        j.put("nuevaPunt", punt);
+        j.put("operation", "actualizarReview");
 
         try {
-            String apiUrl = BASE_URL + "?operation=actualizarReview";
-            URL url = new URL(apiUrl);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setDoOutput(true);
+            //String apiUrl = BASE_URL + "?operation=obtenerUsuario";
+            String response = ApiCliente.executePost(BASE_URL, j.toString());
 
-            // Construir los parámetros para la solicitud POST
-            String postData = "fecha=" + fecha + "&nuevoNombre=" + nuevoNombre +
-                    "&nuevaImagen=" + nuevaImagen + "&nuevoAno=" + nuevoAno +
-                    "&nuevaResena=" + nuevaResena + "&nuevaPunt=" + nuevaPunt;
-            byte[] postDataBytes = postData.getBytes(StandardCharsets.UTF_8);
-
-            // Escribir los parámetros en la conexión
-            connection.getOutputStream().write(postDataBytes);
-
-            // Leer la respuesta del servidor
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            StringBuilder response = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                response.append(line);
-            }
-            reader.close();
-
-            connection.disconnect();
-
-            // Analizar la respuesta del servidor
-            JSONObject jsonResponse = new JSONObject(response.toString());
-            boolean success = jsonResponse.getBoolean("success");
-            if (success) {
-                return Result.success();
+            if (response != null) {
+                Data outputData = new Data.Builder()
+                        .putString("jsonResponse", response)
+                        .build();
+                return Result.success(outputData);
             } else {
                 return Result.failure();
             }
         } catch (Exception e) {
-            Log.e(TAG, "Error al actualizar revisión: " + e.getMessage());
+            Log.e(TAG, "Error al insertar review: " + e.getMessage());
             return Result.failure();
         }
     }
 
 
-    private Result borrarResena() {
+    private Result borrarResena() throws JSONException {
         String fecha = getInputData().getString("fecha");
+        JSONObject j = new JSONObject();
+        j.put("fecha", fecha);
+        j.put("operation", "borrarResena");
 
         try {
-            String apiUrl = BASE_URL + "?operation=borrarResena";
-            URL url = new URL(apiUrl);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setDoOutput(true);
 
-            // Construir los parámetros para la solicitud POST
-            String postData = "fecha=" + fecha;
-            byte[] postDataBytes = postData.getBytes(StandardCharsets.UTF_8);
-
-            // Escribir los parámetros en la conexión
-            connection.getOutputStream().write(postDataBytes);
-
-            // Leer la respuesta del servidor
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            StringBuilder response = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                response.append(line);
-            }
-            reader.close();
-
-            connection.disconnect();
+            String response = ApiCliente.executePost(BASE_URL, j.toString());
 
             // Analizar la respuesta del servidor
             JSONObject jsonResponse = new JSONObject(response.toString());
