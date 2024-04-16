@@ -66,7 +66,18 @@ public class MainActivity extends AppCompatActivity {
         TextView holaUsu = findViewById(R.id.usuarioReview);
         holaUsu.setText(getResources().getString(R.string.hola_str,getIntent().getStringExtra("nombre")));
 
+        Button cerrar = findViewById(R.id.salirMenu);
+        //Añadir string
+        cerrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent e = new Intent(MainActivity.this, IniciarSesion.class);
+                MainActivity.this.startActivity(e);
+            }
+        });
     }
+
+
 
 
     //Función que sirve para aplicar las preferencias del usuario

@@ -38,6 +38,7 @@
         <activity android:name=".ModificarReview"/>
         <activity android:name=".Configuracion"/>
         <activity android:name=".MainActivity"/>
+        <activity android:name=".Registrar"/>
     </application>
 
 

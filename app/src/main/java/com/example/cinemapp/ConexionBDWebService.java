@@ -46,6 +46,8 @@ public class ConexionBDWebService extends Worker {
                     return obtenerUsuario();
             case "visualizarLista":
                 return visualizarLista();
+            case "comprobarUsuario":
+                return comprobarUsuario();
             default:
                 Log.e(TAG, "Operación no válida: " + operation);
                 return Result.failure();
@@ -153,45 +155,28 @@ public class ConexionBDWebService extends Worker {
     }
 
 
-    private Result insertarUsuario() {
+    private Result insertarUsuario() throws JSONException {
         String nombre = getInputData().getString("nombre");
         String contrasena = getInputData().getString("contrasena");
+        JSONObject j = new JSONObject();
+        j.put("nombre", nombre);
+        j.put("contrasena", contrasena);
+        j.put("operation","insertarUsuario");
 
         try {
-            String apiUrl = BASE_URL + "?operation=insertarUsuario";
-            URL url = new URL(apiUrl);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setDoOutput(true);
+            //String apiUrl = BASE_URL + "?operation=obtenerUsuario";
+            String response = ApiCliente.executePost(BASE_URL,j.toString());
 
-            // Construir los parámetros para la solicitud POST
-            String postData = "nombre=" + nombre + "&contrasena=" + contrasena;
-            byte[] postDataBytes = postData.getBytes(StandardCharsets.UTF_8);
-
-            // Escribir los parámetros en la conexión
-            connection.getOutputStream().write(postDataBytes);
-
-            // Leer la respuesta del servidor
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            StringBuilder response = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                response.append(line);
-            }
-            reader.close();
-
-            connection.disconnect();
-
-            // Analizar la respuesta del servidor
-            JSONObject jsonResponse = new JSONObject(response.toString());
-            boolean success = jsonResponse.getBoolean("success");
-            if (success) {
-                return Result.success();
+            if (response != null) {
+                Data outputData = new Data.Builder()
+                        .putString("jsonResponse", response)
+                        .build();
+                return Result.success(outputData);
             } else {
                 return Result.failure();
             }
         } catch (Exception e) {
-            Log.e(TAG, "Error al insertar usuario: " + e.getMessage());
+            Log.e(TAG, "Error al obtener usuario: " + e.getMessage());
             return Result.failure();
         }
     }
@@ -239,6 +224,27 @@ public class ConexionBDWebService extends Worker {
             }
         } catch (Exception e) {
             Log.e(TAG, "Error al obtener lista de revisiones: " + e.getMessage());
+            return Result.failure();
+        }
+    }
+
+    private Result comprobarUsuario() {
+        String usuario = getInputData().getString("usuario");
+
+        try {
+            String apiUrl = BASE_URL + "?operation=comprobarUsuario&usuario=" + usuario;
+            String response = executeHttpRequest(apiUrl);
+
+            if (response != null) {
+                Data outputData = new Data.Builder()
+                        .putString("jsonResponse", response)
+                        .build();
+                return Result.success(outputData);
+            } else {
+                return Result.failure();
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error al comprobar usuario: " + e.getMessage());
             return Result.failure();
         }
     }

@@ -37,15 +37,6 @@ public class IniciarSesion extends AppCompatActivity {
                         .putString("contrasena", escrCont.getText().toString())
 
                         .build();
-
-
-                // Crear una tarea OneTimeWorkRequest para ejecutar MyWorker
-            /*OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(ConexionBDWebService.class)
-                    .setInputData(inputData)
-                    .build();
-
-            // Programar la tarea para que se ejecute con el WorkManager
-            WorkManager.getInstance().enqueue(workRequest);*/
                 OneTimeWorkRequest otwr = new
                         OneTimeWorkRequest.Builder(ConexionBDWebService.class)
                         .setInputData(inputData)
@@ -79,30 +70,17 @@ public class IniciarSesion extends AppCompatActivity {
                             }
                         });
                 WorkManager.getInstance().enqueue(otwr);
-                //           WorkManager.getInstance(this).enqueue(otwr);
-// Obtener el resultado de manera síncrona o asíncrona
-            /*try {
-                WorkInfo workInfo = future.get();
-                if (workInfo.getState() == WorkInfo.State.SUCCEEDED) {
-                    Data outputData = workInfo.getOutputData();
-                    boolean result = outputData.getBoolean("usuario",false);
-                    if(result){
-                        Intent e = new Intent(IniciarSesion.this, MainActivity.class);
-                        IniciarSesion.this.startActivity(e);
-                    }
-                    // Manejar el resultado aquí
-                } else if (workInfo.getState() == WorkInfo.State.FAILED) {
-                    // Trabajo fallido
-                    // Manejar el error aquí
-                }
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-                // Manejar la excepción aquí
+
+
+
             }
-        }
-    });*/
-
-
+        });
+        Button reg = findViewById(R.id.registrarInicio);
+        reg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent e = new Intent(IniciarSesion.this, Registrar.class);
+                IniciarSesion.this.startActivity(e);
             }
         });
     }
