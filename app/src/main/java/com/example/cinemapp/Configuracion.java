@@ -52,6 +52,7 @@ public class Configuracion extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent e = new Intent(Configuracion.this, MainActivity.class);
+                e.putExtra("nombre",getIntent().getStringExtra("nombre") );
                 Configuracion.this.startActivity(e);
             }
         });

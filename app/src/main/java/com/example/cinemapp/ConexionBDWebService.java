@@ -21,7 +21,7 @@ import java.nio.charset.StandardCharsets;
 public class ConexionBDWebService extends Worker {
 
     private static final String TAG = "ConexionBDWebService";
-    private static final String BASE_URL = "http://10.0.2.2:81/api.php";
+    private static final String BASE_URL = "http://35.204.44.158:81/api.php";
 
     public ConexionBDWebService(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);

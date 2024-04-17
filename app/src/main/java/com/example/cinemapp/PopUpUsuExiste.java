@@ -15,7 +15,7 @@ public class PopUpUsuExiste extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("El usuario ya existe");
+        builder.setTitle(getResources().getString(R.string.usuexis_str));
         builder.setNeutralButton(getResources().getString(R.string.vale_str),new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {

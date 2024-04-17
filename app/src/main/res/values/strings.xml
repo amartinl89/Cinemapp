@@ -27,4 +27,13 @@
     <string name="noti_nom_str">Review unfinished</string>
     <string name="noti_descr_str">Write a review for</string>
     <string name="hola_str">Hola %1$s</string>
+    <string name="cerrar_str">Log out</string>
+    <string name="iniciar_str">Log in</string>
+    <string name="regis_str">Sign up</string>
+    <string name="user_str">Usuario</string>
+    <string name="cont_str">Password</string>
+    <string name="confcont_str">Repeat password</string>
+    <string name="contusuinco_str">Incorrect user or password</string>
+    <string name="usuexis_str">The user already exists</string>
+    <string name="usucontcoincidir_str">Las contraseñas deben coincidir y debe haber un nombre de usuario</string>
 </resources>

@@ -148,7 +148,7 @@ public class ModificarReview extends AppCompatActivity {
                     punti = (Integer) puntI.getSelectedItem();
                     Bitmap img = ((BitmapDrawable) imgI.getDrawable()).getBitmap();
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    Bitmap resizedBitmap = Bitmap.createScaledBitmap(img, 200, 200, false);
+                    Bitmap resizedBitmap = Bitmap.createScaledBitmap(img, 50, 50, false);
                     resizedBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
                     byteArray = stream.toByteArray();
                     String fechaString = intent.getStringExtra("fecha");

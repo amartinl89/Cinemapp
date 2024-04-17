@@ -28,4 +28,13 @@
     <string name="noti_nom_str">Reseña incompleta</string>
     <string name="noti_descr_str">Escribe una reseña para</string>
     <string name="hola_str">Hola %1$s</string>
+    <string name="cerrar_str">Cerrar sesión</string>
+    <string name="iniciar_str">Abrir sesión</string>
+    <string name="regis_str">Regístrate</string>
+    <string name="user_str">Usuario</string>
+    <string name="cont_str">Contraseña</string>
+    <string name="confcont_str">Confirma contraseña</string>
+    <string name="contusuinco_str">Usuario o contraseña incorrecta</string>
+    <string name="usuexis_str">El usuario ya existe</string>
+    <string name="usucontcoincidir_str">Las contraseñas deben coincidir y debe haber un nombre de usuario</string>
 </resources>

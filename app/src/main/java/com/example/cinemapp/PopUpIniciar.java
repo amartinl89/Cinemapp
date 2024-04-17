@@ -15,7 +15,7 @@ public class PopUpIniciar extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Usuario o contraseña incorrectos");
+        builder.setTitle(getResources().getString(R.string.contusuinco_str));
         builder.setNeutralButton(getResources().getString(R.string.vale_str),new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {

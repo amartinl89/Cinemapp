@@ -209,7 +209,7 @@ public class AnadirPelicula extends AppCompatActivity {
                     punt = (Integer) puntI.getSelectedItem();
                     Bitmap img = ((BitmapDrawable) imgI.getDrawable()).getBitmap();
                     //Para que no haya problemas con imágenes grandes
-                    Bitmap resizedBitmap = Bitmap.createScaledBitmap(img, 200, 200, false);
+                    Bitmap resizedBitmap = Bitmap.createScaledBitmap(img, 50, 50, false);
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
                     resizedBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);

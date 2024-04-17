@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.BIND_CALL_STREAMING_SERVICE"/>
-    <uses-permission android:name="android.permission.SYSTEM_CALL_STREAMING"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.BIND_CALL_STREAMING_SERVICE" />
+    <uses-permission android:name="android.permission.SYSTEM_CALL_STREAMING" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <uses-feature android:name="android.hardware.camera" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -21,7 +23,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Cinemapp"
         android:usesCleartextTraffic="true"
-        tools:targetApi="30">
+        tools:targetApi="29">
+        <receiver
+            android:name=".PeliWidget"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/peli_widget_info" />
+        </receiver>
+
         <activity
             android:name=".IniciarSesion"
             android:exported="true">
@@ -29,17 +43,24 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-
             </intent-filter>
         </activity>
-        <activity android:name=".AnadirPelicula"/>
-        <activity android:name=".VerPelicula"/>
-        <activity android:name=".VisualizarReviewDetalle"/>
-        <activity android:name=".ModificarReview"/>
-        <activity android:name=".Configuracion"/>
-        <activity android:name=".MainActivity"/>
-        <activity android:name=".Registrar"/>
-    </application>
 
+        <service
+            android:name=".FCM"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <activity android:name=".AnadirPelicula" />
+        <activity android:name=".VerPelicula" />
+        <activity android:name=".VisualizarReviewDetalle" />
+        <activity android:name=".ModificarReview" />
+        <activity android:name=".Configuracion" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".Registrar" />
+    </application>
 
 </manifest>
