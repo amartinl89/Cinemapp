@@ -58,6 +58,7 @@ public class ConexionBDWebService extends Worker {
     }
 
     private Result insertarReview()  throws JSONException{
+        //Añadir review
         String fecha = getInputData().getString("fecha");
         String usuario = getInputData().getString("usuario");
         String nombre = getInputData().getString("nombre");
@@ -96,6 +97,7 @@ public class ConexionBDWebService extends Worker {
 
 
     private Result actualizarReview() throws JSONException {
+        //Actualizar review
         String fecha = getInputData().getString("fecha");
         String nombre = getInputData().getString("nuevoNombre");
         String imagen = getInputData().getString("nuevaImagen");
@@ -131,6 +133,7 @@ public class ConexionBDWebService extends Worker {
 
 
     private Result borrarResena() throws JSONException {
+        //Borrar reseña
         String fecha = getInputData().getString("fecha");
         JSONObject j = new JSONObject();
         j.put("fecha", fecha);
@@ -156,6 +159,7 @@ public class ConexionBDWebService extends Worker {
 
 
     private Result insertarUsuario() throws JSONException {
+        //Insertar usuario
         String nombre = getInputData().getString("nombre");
         String contrasena = getInputData().getString("contrasena");
         JSONObject j = new JSONObject();
@@ -182,6 +186,7 @@ public class ConexionBDWebService extends Worker {
     }
 
     private Result obtenerUsuario() throws JSONException {
+        //Obtener usuario
         String nombre = getInputData().getString("nombre");
         String contrasena = getInputData().getString("contrasena");
         JSONObject j = new JSONObject();
@@ -208,6 +213,7 @@ public class ConexionBDWebService extends Worker {
     }
 
     private Result visualizarLista() {
+        //Ver reviews
         String usuario = getInputData().getString("usuario");
 
         try {
@@ -229,6 +235,7 @@ public class ConexionBDWebService extends Worker {
     }
 
     private Result comprobarUsuario() {
+        //Para saber si existe el usuario
         String usuario = getInputData().getString("usuario");
 
         try {

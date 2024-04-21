@@ -57,12 +57,16 @@ public class PopUpModificado extends DialogFragment {
             public void onClick(DialogInterface dialogInterface, int i) {
                 //GestorBD bd = new GestorBD(getContext());
                 //bd.actualizarReview(fechaString,nom,imagenBytes,Integer.parseInt(ano),resena,Integer.parseInt(punt));
+                GestorBD sgbd = new GestorBD(getContext());
                 String b64 = Base64.getEncoder().encodeToString(imagenBytes);
+                if(sgbd.actualizarImagen(fechaString, b64)==0) {
+                    sgbd.insertarImagen(fechaString, b64);
+                }
                 Data inputData = new Data.Builder()
                         .putString("operation", "actualizarReview")
                         .putString("fecha",fechaString)
                         .putString("nuevoNombre",nom)
-                        .putString("nuevaImagen",b64)
+                        .putString("nuevaImagen",fechaString)
                         .putString("nuevoAno",ano)
                         .putString("nuevaResena", resena)
                         .putString("nuevaPunt", punt)

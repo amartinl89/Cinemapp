@@ -53,6 +53,10 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+        <service
+            android:name=".ConexionBDWebService"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <activity android:name=".AnadirPelicula" />
         <activity android:name=".VerPelicula" />

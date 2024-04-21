@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +24,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
@@ -48,6 +52,7 @@ public class PeliculaAdapter extends RecyclerView.Adapter<PeliculaAdapter.Pelicu
 
     @Override
     public void onBindViewHolder(@NonNull PeliculaViewHolder holder, int position) {
+        byte[] imagenBytes = null;
         try {
             JSONObject pelicula = listaPeliculas.getJSONObject(position);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
@@ -59,14 +64,29 @@ public class PeliculaAdapter extends RecyclerView.Adapter<PeliculaAdapter.Pelicu
             holder.nombreTarjeta.setText(nom);
             holder.anoTarjeta.setText(ano);
             holder.puntTarjeta.setText(punt);
-            String base64 = (String) pelicula.get("Imagen");
-            //byte[] imagenBytes = (byte[]) pelicula.get("Imagen");
-            byte[] imagenBytes = Base64.getDecoder().decode(base64);
-            System.out.println("Longitud de imagenBytes: " + imagenBytes.length);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(imagenBytes, 0, imagenBytes.length);
-            holder.imagenTarjeta.setImageBitmap(bitmap);
+            GestorBD sgbd = new GestorBD(parent);
+            try {
+                String base64 = sgbd.verImagen((String) pelicula.get("Imagen"));
+                imagenBytes = Base64.getDecoder().decode(base64);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(imagenBytes, 0, imagenBytes.length);
+                //String base64 = (String) pelicula.get("Imagen");
+                //byte[] imagenBytes = (byte[]) pelicula.get("Imagen");
+                //byte[] imagenBytes = Base64.getDecoder().decode(base64);
+                System.out.println("Longitud de imagenBytes: " + imagenBytes.length);
+                //Bitmap bitmap = BitmapFactory.decodeByteArray(imagenBytes, 0, imagenBytes.length);
+                holder.imagenTarjeta.setImageBitmap(bitmap);
+            }catch(Exception e){
+                Drawable drawable = parent.getResources().getDrawable(R.drawable._478111);
+                Bitmap bitmap = drawableToBitmap(drawable);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                imagenBytes = stream.toByteArray();
+                holder.imagenTarjeta.setImageBitmap(bitmap);
+            }
             String resena = pelicula.getString("Resena");
             holder.verReview.setText(parent.getResources().getString(R.string.ver_detalle_str));
+            byte[] finalImagenBytes = imagenBytes;
             holder.verReview.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -76,7 +96,7 @@ public class PeliculaAdapter extends RecyclerView.Adapter<PeliculaAdapter.Pelicu
                     intent.putExtra("nom", nom);
                     intent.putExtra("ano", ano);
                     intent.putExtra("punt", punt);
-                    intent.putExtra("imagen", imagenBytes);
+                    intent.putExtra("imagen", finalImagenBytes);
                     intent.putExtra("resena", resena);
                     intent.putExtra("nombre",usuario);
                     PeliculaAdapter.this.parent.startActivity(intent);
@@ -100,6 +120,23 @@ public class PeliculaAdapter extends RecyclerView.Adapter<PeliculaAdapter.Pelicu
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+    }
+    //Para poder usar imágenes de la app
+    public static Bitmap drawableToBitmap(Drawable drawable) {
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable) drawable).getBitmap();
+        }
+
+        int width = drawable.getIntrinsicWidth();
+        int height = drawable.getIntrinsicHeight();
+
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
+        return bitmap;
     }
 
     @Override
@@ -122,6 +159,7 @@ public class PeliculaAdapter extends RecyclerView.Adapter<PeliculaAdapter.Pelicu
             verReview = itemView.findViewById(R.id.verReviewVerPeliculaV);
             borrarResena =itemView.findViewById(R.id.borarrVerPeliculaV);
         }
+
     }
 }
 

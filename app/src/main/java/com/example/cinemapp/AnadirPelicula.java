@@ -132,23 +132,17 @@ public class AnadirPelicula extends AppCompatActivity {
                         }
                     }
                 });
-        //Intent implícito para selecionar imágenes
-        /*insImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                pickImageLauncher.launch(intent);
-            }
-        });*/
 
 
         insImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                builder.setTitle("Seleccionar Imagen");
-                builder.setItems(new CharSequence[]{"Galería", "Cámara"}, (dialog, which) -> {
+                builder.setTitle(getResources().getString(R.string.select_img_str));
+                builder.setItems(
+                        new CharSequence[]{getResources().getString(R.string.gal_str),
+                                getResources().getString(R.string.cam_str)},
+                        (dialog, which) -> {
                     switch (which) {
                         case 0:
                             // Abrir galería
@@ -201,7 +195,7 @@ public class AnadirPelicula extends AppCompatActivity {
                         getBaseContext().getResources().getConfiguration();
                 Context context =
                         getBaseContext().createConfigurationContext(configuration);
-                GestorBD bd = new GestorBD(context);
+                //GestorBD bd = new GestorBD(context);
                 try {
                     ano = (Integer) anoS.getSelectedItem();
                     nom = nomT.getText().toString();
@@ -209,20 +203,24 @@ public class AnadirPelicula extends AppCompatActivity {
                     punt = (Integer) puntI.getSelectedItem();
                     Bitmap img = ((BitmapDrawable) imgI.getDrawable()).getBitmap();
                     //Para que no haya problemas con imágenes grandes
-                    Bitmap resizedBitmap = Bitmap.createScaledBitmap(img, 50, 50, false);
+                    Bitmap resizedBitmap = Bitmap.createScaledBitmap(img, 100, 200, false);
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
                     resizedBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
                     byteArray = stream.toByteArray();
+                    GestorBD sgbd = new GestorBD(context);
+                    String b64 = Base64.getEncoder().encodeToString(byteArray);
+                    sgbd.insertarImagen(formattedDate,b64);
                     //Si el nombre no está vacío
                     if(!nom.equals("")) {
-                        String b64 = Base64.getEncoder().encodeToString(byteArray);
+
                         //bd.insertarReview(formattedDate, nom, byteArray, ano, review, punt);
                         Data inputData = new Data.Builder()
                                 .putString("operation", "insertarReview")
                                 .putString("nombre", nom)
                                 //.putByteArray("imagen", b64)
-                                .putString("imagen",b64)
+                                //.putString("imagen",b64)
+                                .putString("imagen",formattedDate)
                                 .putString("ano", ano.toString())
                                 .putString("puntuacion", punt.toString())
                                 .putString("fecha", formattedDate)

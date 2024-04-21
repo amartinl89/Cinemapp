@@ -24,6 +24,7 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Base64;
 import java.util.Date;
 import java.util.Locale;
 
@@ -47,6 +48,12 @@ public class PopUpBorrar extends DialogFragment {
             public void onClick(DialogInterface dialog, int which) {
                 if (parentIntent != null) {
                     String fecha = parentIntent.getStringExtra("fecha"); //Se borra
+                    try {
+                        GestorBD sgbd = new GestorBD(getContext());
+                        sgbd.borrarImagen(fecha);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                     Data inputData = new Data.Builder()
                             .putString("operation", "borrarResena")
                             .putString("fecha",fecha)

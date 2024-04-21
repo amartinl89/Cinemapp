@@ -4,6 +4,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.util.Log;
 
@@ -39,6 +40,8 @@ public class FCM extends FirebaseMessagingService {
         if (remoteMessage.getNotification() != null) {
             String title = remoteMessage.getNotification().getTitle();
             String body = remoteMessage.getNotification().getBody();
+            Configuration configuration =
+                    getBaseContext().getResources().getConfiguration();
 
             // Mostrar la notificación en la barra de notificaciones
             showNotification(title, body);

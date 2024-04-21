@@ -4,8 +4,12 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.widget.RemoteViews;
 
 import androidx.annotation.NonNull;
@@ -25,19 +29,23 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Base64;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Implementation of App Widget functionality.
  */
 public class PeliWidget extends AppWidgetProvider{
 
+    private Timer updateTimer;
+    private static final String ACTION_UPDATE_WIDGET = "com.example.cinemapp.action.UPDATE_WIDGET";
 
-
-    private static class UpdateTask extends TimerTask {
+    private class UpdateTask extends TimerTask {
         private final Context context;
         private final AppWidgetManager appWidgetManager;
         private final int[] appWidgetIds;
@@ -54,14 +62,13 @@ public class PeliWidget extends AppWidgetProvider{
             // Aquí se realiza la actualización del widget
             try {
                 updateWidget();
-            } catch (JSONException e) {
+            } catch (JSONException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }
 
-        private void updateWidget() throws JSONException {
-            // Aquí puedes realizar la lógica para cambiar la revisión mostrada en el widget
-            // Por ejemplo, obtener una revisión aleatoria
+        private void updateWidget() throws JSONException, InterruptedException {
+            //Obtener review random
             getRandomReview();
 
             // Actualizar cada widget individualmente
@@ -70,8 +77,8 @@ public class PeliWidget extends AppWidgetProvider{
             }
         }
 
-        private void getRandomReview() throws JSONException {
-            if(!context.getSharedPreferences("Configuracion", Context.MODE_PRIVATE).
+        private void getRandomReview() throws JSONException, InterruptedException {
+            if(context.getSharedPreferences("Configuracion", Context.MODE_PRIVATE).
                     getBoolean("SESION", false)){
                 Data inputData = new Data.Builder()
                         .putString("operation", "visualizarLista")
@@ -82,62 +89,117 @@ public class PeliWidget extends AppWidgetProvider{
                         OneTimeWorkRequest.Builder(ConexionBDWebService.class)
                         .setInputData(inputData)
                         .build();
-                WorkManager.getInstance().getWorkInfoByIdLiveData(otwr.getId())
-                        .observe((LifecycleOwner) context, new Observer<WorkInfo>() {
-                            @Override
-                            public void onChanged(WorkInfo workInfo) {
-                                try {
-                                    if (workInfo != null && workInfo.getState().isFinished()) {
-                                        Data outputData = workInfo.getOutputData();
-                                        String res = outputData.getString("jsonResponse");
+                // Enqueue de manera síncrona usando BlockingCoroutineDispatcher
 
-                                        JSONArray listaPeliculas = new JSONArray(res);
-                                        int randomIndex = new Random().nextInt(listaPeliculas.length());
+                try {
+                    WorkManager workManager = WorkManager.getInstance();
+                    workManager.enqueue(otwr).getResult().get();
 
-                                        // Obtener el elemento JSONObject en el índice aleatorio
-                                        peli = listaPeliculas.getJSONObject(randomIndex);
-                                    }
-                                } catch (JSONException e) {
+                    // Esperar a que la tarea termine y obtener el resultado
+                    boolean finished = false;
+                    while (!finished) {
+                        WorkInfo workInfo = workManager.getWorkInfoById(otwr.getId()).get();
+                        if (workInfo != null && workInfo.getState().isFinished()) {
+                            finished = true;
+                            Data outputData = workInfo.getOutputData();
+                            String res = outputData.getString("jsonResponse");
 
-                                }
-                            }
-                        });
-                WorkManager.getInstance().enqueue(otwr);
+                            JSONArray listaPeliculas = new JSONArray(res);
+                            int randomIndex = new Random().nextInt(listaPeliculas.length());
+
+                            // Obtener el elemento JSONObject en el índice aleatorio
+                            peli = listaPeliculas.getJSONObject(randomIndex);
+                            peli.put("Error", false);
+                        } else {
+                            // Esperar antes de verificar de nuevo
+                            Thread.sleep(1000); // Esperar 1 segundo a que finalice
+                        }
+                    }
+                } catch (Exception e) {
+                    peli = new JSONObject();
+                    peli.put("Nombre","No hay películas");
+                    peli.put("Error",true);
+                    Drawable drawable = context.getResources().getDrawable(R.drawable._478111);
+                    Bitmap bitmap = drawableToBitmap(drawable);
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    peli.put("Imagen",bitmap);
+                }
             }else {
                 peli = new JSONObject();
-                peli.put("nombre","Inicia sesión");
+                peli.put("Nombre","Inicia sesión");
+                peli.put("Error",true);
+                Drawable drawable = context.getResources().getDrawable(R.drawable._478111);
+                Bitmap bitmap = drawableToBitmap(drawable);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                peli.put("Imagen",bitmap);
 
             }
         }
 
-        private void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) throws JSONException {
+        private void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) throws JSONException, InterruptedException {
             // Configurar las vistas del widget con la revisión obtenida
-            if(peli.has("imagen")){
+            if(!peli.getBoolean("Error")){
                 RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.peli_widget);
-                views.setTextViewText(R.id.nomWidget, peli.getString("nombre"));
-                String base64 = (String) peli.get("Imagen");
-                byte[] imagenBytes = Base64.getDecoder().decode(base64);
-                Bitmap bitmap = BitmapFactory.decodeByteArray(imagenBytes, 0, imagenBytes.length);
-                views.setImageViewBitmap(R.id.imgWidget,bitmap);
+                views.setTextViewText(R.id.nomWidget, peli.getString("Nombre"));
+                GestorBD sgbd = new GestorBD(context);
+                try {
+                String base64 = sgbd.verImagen((String)peli.get("Imagen"));
+                //String base64 = (String) peli.get("Imagen");
+                    byte[] imagenBytes = Base64.getDecoder().decode(base64);
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(imagenBytes, 0, imagenBytes.length);
+                    views.setImageViewBitmap(R.id.imgWidget, bitmap);
+                }catch  (Exception e){
+                    Drawable drawable = context.getResources().getDrawable(R.drawable._478111);
+                    Bitmap bitmap = drawableToBitmap(drawable);
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    views.setImageViewBitmap(R.id.imgWidget,bitmap);
+                }
                 appWidgetManager.updateAppWidget(appWidgetId, views);
             }else {
                 RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.peli_widget);
-                views.setTextViewText(R.id.nomWidget,"Inicia sesión");
+                views.setTextViewText(R.id.nomWidget,peli.getString("Nombre"));
+                Drawable drawable = context.getResources().getDrawable(R.drawable._478111);
+                Bitmap bitmap = drawableToBitmap(drawable);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                views.setImageViewBitmap(R.id.imgWidget,bitmap);
                 appWidgetManager.updateAppWidget(appWidgetId, views);
             }
+        }
+        public Bitmap drawableToBitmap(Drawable drawable) {
+            if (drawable instanceof BitmapDrawable) {
+                return ((BitmapDrawable) drawable).getBitmap();
+            }
+
+            int width = drawable.getIntrinsicWidth();
+            int height = drawable.getIntrinsicHeight();
+
+            Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+            drawable.draw(canvas);
+
+            return bitmap;
         }
     }
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        // Este método se llama cuando el widget debe ser actualizado
 
-        // Configura un temporizador para actualizar el widget cada minuto
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new UpdateTask(context, appWidgetManager, appWidgetIds), 0, 60000); // 60000 ms = 1 minuto
+        if (updateTimer == null) {
+           // updateTimer = new Timer();
+            // Programa la tarea de actualización para ejecutarse cada 30 segundos
+           // updateTimer.scheduleAtFixedRate(new UpdateTask(context, appWidgetManager, appWidgetIds), 3000, 60000);// 60000 ms = 1 minuto
+        }
     }
+
 
     @Override
     public void onEnabled(Context context) {
@@ -152,12 +214,38 @@ public class PeliWidget extends AppWidgetProvider{
                 new ComponentName(context, PeliWidget.class));
 
         // Configura un temporizador para actualizar el widget cada minuto
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new UpdateTask(context, appWidgetManager, appWidgetIds), 0, 1); // 60000 ms = 1 minuto
+        if (updateTimer == null) {
+            updateTimer = new Timer();
+            // Programa la tarea de actualización para ejecutarse cada 30 segundos
+            updateTimer.scheduleAtFixedRate(new UpdateTask(context, appWidgetManager, appWidgetIds), 3000, 10000);// 60000 ms = 1 minuto
+        } // 60000 ms = 1 minuto
     }
 
     @Override
     public void onDisabled(Context context) {
-        // Enter relevant functionality for when the last widget is disabled
+        super.onDisabled(context);
+        // Este método se llama cuando se deshabilita el último widget
+        // Cancela el temporizador si no hay más widgets activos
+        if (updateTimer != null) {
+            updateTimer.cancel();
+            updateTimer = null;
+        }
+    }
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
+
+        if (ACTION_UPDATE_WIDGET.equals(intent.getAction())) {
+            // Se recibió una acción para actualizar el widget
+            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+            int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, PeliWidget.class));
+
+            if (updateTimer == null) {
+                // Iniciar el temporizador si aún no está configurado
+                updateTimer = new Timer();
+                updateTimer.scheduleAtFixedRate(new UpdateTask(context, appWidgetManager, appWidgetIds), 0, 15000); // Cada 15 segundos
+            }
+        }
     }
 }

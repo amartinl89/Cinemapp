@@ -2,6 +2,7 @@ package com.example.cinemapp;
 
 import static java.lang.Integer.parseInt;
 
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +12,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -26,11 +29,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class ModificarReview extends AppCompatActivity {
     EditText txtNombre;
@@ -106,12 +114,67 @@ public class ModificarReview extends AppCompatActivity {
                     }
                 }
         );
-        insImg.setOnClickListener(new View.OnClickListener() {
+
+        ActivityResultLauncher<Intent> takePictureLauncher =
+                registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                    if (result.getResultCode() == RESULT_OK && result.getData()!= null) {
+                        Bundle bundle = result.getData().getExtras();
+                        Bitmap laminiatura = (Bitmap) bundle.get("data");
+//GUARDAR COMO FICHERO
+// Memoria externa
+                        File eldirectorio = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+                        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+                        String nombrefichero = "IMG_" + timeStamp + "_";
+                        File imagenFich = new File(eldirectorio, nombrefichero + ".jpg");
+                        OutputStream os;
+                        try {
+                            os = new FileOutputStream(imagenFich);
+                            laminiatura.compress(Bitmap.CompressFormat.JPEG, 100, os);
+                            ImageView imageView = findViewById(R.id.visualImgAnadirPeliV);
+                            imageView.setImageBitmap(laminiatura);
+                            os.flush();
+                            os.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+        //Intent implícito para selecionar imágenes
+        /*insImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType("image/*");
                 pickImageLauncher.launch(intent);
+            }
+        });*/
+
+
+        insImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                builder.setTitle(getResources().getString(R.string.select_img_str));
+                builder.setItems(
+                        new CharSequence[]{getResources().getString(R.string.gal_str),
+                                getResources().getString(R.string.cam_str)},
+                        (dialog, which) -> {
+                            switch (which) {
+                                case 0:
+                                    // Abrir galería
+                                    Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                    galleryIntent.setType("image/*");
+                                    pickImageLauncher.launch(galleryIntent);
+                                    break;
+                                case 1:
+                                    // Abrir cámara
+                                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                    takePictureLauncher.launch(cameraIntent);
+
+                                    break;
+                            }
+                        });
+                builder.show();
             }
         });
         Button back = findViewById(R.id.backAnadirPeliV);
@@ -148,7 +211,7 @@ public class ModificarReview extends AppCompatActivity {
                     punti = (Integer) puntI.getSelectedItem();
                     Bitmap img = ((BitmapDrawable) imgI.getDrawable()).getBitmap();
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    Bitmap resizedBitmap = Bitmap.createScaledBitmap(img, 50, 50, false);
+                    Bitmap resizedBitmap = Bitmap.createScaledBitmap(img, 100, 200, false);
                     resizedBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
                     byteArray = stream.toByteArray();
                     String fechaString = intent.getStringExtra("fecha");

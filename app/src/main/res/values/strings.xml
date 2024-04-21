@@ -36,4 +36,7 @@
     <string name="contusuinco_str">Incorrect user or password</string>
     <string name="usuexis_str">The user already exists</string>
     <string name="usucontcoincidir_str">Las contraseñas deben coincidir y debe haber un nombre de usuario</string>
+    <string name="img_selecc_str">Choose an option</string>
+    <string name="cam_str">Camera</string>
+    <string name="gal_str">Gallery</string>
 </resources>

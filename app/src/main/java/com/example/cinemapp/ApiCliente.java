@@ -28,6 +28,7 @@ public class ApiCliente {
     }
 
     public static String executePost(String urlString, String postData) throws Exception {
+        //POST
         URL url = new URL(urlString);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
