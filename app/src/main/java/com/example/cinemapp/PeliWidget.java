@@ -48,7 +48,7 @@ public class PeliWidget extends AppWidgetProvider{
     private class UpdateTask extends TimerTask {
         private final Context context;
         private final AppWidgetManager appWidgetManager;
-        private final int[] appWidgetIds;
+        private  int[] appWidgetIds;
         private JSONObject peli;
 
         public UpdateTask(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -70,7 +70,7 @@ public class PeliWidget extends AppWidgetProvider{
         private void updateWidget() throws JSONException, InterruptedException {
             //Obtener review random
             getRandomReview();
-
+            appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, PeliWidget.class));
             // Actualizar cada widget individualmente
             for (int appWidgetId : appWidgetIds) {
                 updateAppWidget(context, appWidgetManager, appWidgetId);
