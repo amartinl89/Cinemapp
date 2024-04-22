@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -210,7 +212,13 @@ public class AnadirPelicula extends AppCompatActivity {
                     byteArray = stream.toByteArray();
                     GestorBD sgbd = new GestorBD(context);
                     String b64 = Base64.getEncoder().encodeToString(byteArray);
-                    sgbd.insertarImagen(formattedDate,b64);
+                    try {
+                        sgbd.insertarImagen(formattedDate, b64);
+                    }catch(SQLiteException e){
+                        SQLiteDatabase db = sgbd.getWritableDatabase();
+                        sgbd.onUpgrade(db,1,1);
+                        sgbd.insertarImagen(formattedDate, b64);
+                    }
                     //Si el nombre no está vacío
                     if(!nom.equals("")) {
 

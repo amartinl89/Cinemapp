@@ -96,6 +96,9 @@ public class PeliWidget extends AppWidgetProvider{
                     workManager.enqueue(otwr).getResult().get();
 
                     // Esperar a que la tarea termine y obtener el resultado
+                    //Como no es posible hacerlo de la manera "correcta"
+                    //porque el context está detatched, se hará con thread
+                    //para verificar que se ha realizado la petición correctamente
                     boolean finished = false;
                     while (!finished) {
                         WorkInfo workInfo = workManager.getWorkInfoById(otwr.getId()).get();

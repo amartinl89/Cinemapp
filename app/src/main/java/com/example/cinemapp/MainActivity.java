@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setPreferencias();
-
         //Se suscribe a FCM
         FirebaseMessaging.getInstance().subscribeToTopic("all")
                 .addOnCompleteListener(task -> {
@@ -95,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
                 editor.putBoolean("SESION", false);
                 editor.putString("USUARIO","");
                 editor.apply();
+                FirebaseMessaging.getInstance().unsubscribeFromTopic("all");
                 Intent e = new Intent(MainActivity.this, IniciarSesion.class);
                 MainActivity.this.startActivity(e);
             }

@@ -6,6 +6,8 @@ import static android.content.Intent.parseIntent;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
@@ -59,7 +61,13 @@ public class PopUpModificado extends DialogFragment {
                 //bd.actualizarReview(fechaString,nom,imagenBytes,Integer.parseInt(ano),resena,Integer.parseInt(punt));
                 GestorBD sgbd = new GestorBD(getContext());
                 String b64 = Base64.getEncoder().encodeToString(imagenBytes);
-                if(sgbd.actualizarImagen(fechaString, b64)==0) {
+                try {
+                    if (sgbd.actualizarImagen(fechaString, b64) == 0) {
+                        sgbd.insertarImagen(fechaString, b64);
+                    }
+                }catch(SQLiteException e){
+                    SQLiteDatabase db = sgbd.getWritableDatabase();
+                    sgbd.onUpgrade(db,1,1);
                     sgbd.insertarImagen(fechaString, b64);
                 }
                 Data inputData = new Data.Builder()

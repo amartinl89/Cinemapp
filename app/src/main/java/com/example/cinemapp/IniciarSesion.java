@@ -3,12 +3,14 @@ package com.example.cinemapp;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
 import androidx.work.Data;
@@ -21,9 +23,12 @@ import com.google.common.util.concurrent.ListenableFuture;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 public class IniciarSesion extends AppCompatActivity {
+    private static final String PREF_IDIOMA = "idioma";
+    private static final String PREF_OSCURO = "oscuro";
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +40,7 @@ public class IniciarSesion extends AppCompatActivity {
                     getString("USUARIO", null));
             IniciarSesion.this.startActivity(e);
         }
+        setPreferencias();
         setContentView(R.layout.iniciar_sesion);
         TextView nom = findViewById(R.id.nomInicio);
         TextView cont = findViewById(R.id.contInicio);
@@ -105,5 +111,28 @@ public class IniciarSesion extends AppCompatActivity {
                 IniciarSesion.this.startActivity(e);
             }
         });
+
+    }
+    //Función que sirve para aplicar las preferencias del usuario
+    private void setPreferencias() {
+        SharedPreferences prefs = getSharedPreferences("Configuracion", Context.MODE_PRIVATE);
+        String idiomaSeleccionado = prefs.getString(PREF_IDIOMA, "null");
+        if(!idiomaSeleccionado.equals("null")) {
+            Locale locale = new Locale(idiomaSeleccionado);
+            Locale.setDefault(locale);
+            Configuration configuration = getResources().getConfiguration();
+            configuration.setLocale(locale);
+            configuration.setLayoutDirection(locale);
+            getResources().updateConfiguration(configuration, getResources().getDisplayMetrics());
+        }
+        String temaSeleccionado = prefs.getString(PREF_OSCURO, "null");
+        if(!temaSeleccionado.equals("null")){
+            if(temaSeleccionado.equals("0")){
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            }
+            else{
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            }
+        }
     }
 }
